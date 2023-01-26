@@ -5,7 +5,8 @@
   },
   "dependencies": {
     "apollo-server-express": "^3.11.1",
-    "graphql": "^16.6.0"
+    "graphql": "^16.6.0",
+    "postgres": "^3.3.3"
   },
   "devDependencies": {
     "dotenv": "^16.0.3",

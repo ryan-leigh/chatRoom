@@ -18,15 +18,15 @@ CREATE TABLE users (
 
 CREATE TABLE messages (
   id serial,
-  user_id int,
-  room_id int,
+  userId int,
+  roomId int,
   body text,
-  time_created int,
+  timeCreated int,
   PRIMARY KEY(id),
-  CONSTRAINT fk_user_id
-    FOREIGN KEY(user_id)
+  CONSTRAINT fk_userId
+    FOREIGN KEY(userId)
       REFERENCES users(id),
-  CONSTRAINT fk_room_id
-    FOREIGN KEY(room_id)
+  CONSTRAINT fk_roomId
+    FOREIGN KEY(roomId)
       REFERENCES rooms(id)
 );
