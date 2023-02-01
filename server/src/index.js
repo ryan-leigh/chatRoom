@@ -17,7 +17,7 @@ const knexConfig = {
 const db = new MyDatabase(knexConfig);
 const typeDefs = require('./schema');
 const resolvers = require('./resolvers');
-const server = new ApolloServer({
+const apolloServer = new ApolloServer({
   typeDefs,
   resolvers,
   dataSources: () => ({ db })
@@ -25,16 +25,16 @@ const server = new ApolloServer({
 const port = process.env.PORT;
 
 const start = async () => {
-  await server.start()
+  await apolloServer.start()
     .then(() => {
       app.use(express.static(path.join(__dirname, '../../client/dist')));
     })
     .then(() => {
-      server.applyMiddleware({ app });
+      apolloServer.applyMiddleware({ app });
     })
     .then(() => {
       app.listen({ port }, () => {
-        console.log(`🚀 Server ready at http://localhost:3000${server.graphqlPath}`);
+        console.log(`🚀 Server ready at http://localhost:3000${apolloServer.graphqlPath}`);
       });
     });
 }

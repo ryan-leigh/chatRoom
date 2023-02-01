@@ -1,5 +1,3 @@
-const sql = require('../sql/db.js');
-
 const resolvers = {
   Query: {
     room: async (_, { id }, { dataSources }) => {
@@ -35,13 +33,6 @@ const resolvers = {
   Room: {
     messages: async ( { id }, _, { dataSources } ) => {
       return await dataSources.db.messages(id);
-      // const result = await sql`
-      //   SELECT *
-      //   FROM messages
-      //   WHERE roomId = ${id}
-      //   ORDER BY timeCreated DESC;
-      // `
-      // return result;
     }
   }
 };
