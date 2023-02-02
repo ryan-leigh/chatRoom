@@ -12,21 +12,21 @@ CREATE TABLE users (
   id serial,
   "name" text,
   email text,
-  updatedAt int,
+  updated_at int,
   PRIMARY KEY(id)
 );
 
 CREATE TABLE messages (
   id serial,
-  userId int,
-  roomId int,
+  user_id int,
+  room_id int,
   body text,
-  timeCreated int,
+  time_created int,
   PRIMARY KEY(id),
-  CONSTRAINT fk_userId
-    FOREIGN KEY(userId)
+  CONSTRAINT fk_user_id
+    FOREIGN KEY(user_id)
       REFERENCES users(id),
-  CONSTRAINT fk_roomId
-    FOREIGN KEY(roomId)
+  CONSTRAINT fk_room_id
+    FOREIGN KEY(room_id)
       REFERENCES rooms(id)
 );

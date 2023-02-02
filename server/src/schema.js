@@ -27,13 +27,14 @@ const typeDefs = gql`
     id: ID!
     name: String!
     email: String
-    updatedAt: Int
+    updated_at: Int
   }
 
   type Message {
     id: ID!
     body: String
-    timeCreated: Int
+    time_created: Int!
+    author: User
   }
 
   "MUTATION RESPONSES"

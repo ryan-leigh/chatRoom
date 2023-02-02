@@ -7,7 +7,7 @@ import Room from '../pages/Room.jsx'
 const App = () => {
   useReactiveVar(currentPage);
   useReactiveVar(currentUser);
-  console.log('App page')
+  console.log('App')
 
   // Pages: 'login', 'room'
   switch (currentPage()) {
@@ -25,9 +25,9 @@ const App = () => {
       )
     default:
       return (
-        <div>
+        <>
           <Login />
-        </div>
+        </>
       )
   }
 }

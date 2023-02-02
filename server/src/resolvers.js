@@ -31,8 +31,14 @@ const resolvers = {
   },
 
   Room: {
-    messages: async ( { id }, _, { dataSources } ) => {
+    messages: async ({ id }, _, { dataSources }) => {
       return await dataSources.db.messages(id);
+    }
+  },
+
+  Message: {
+    author: async ({user_id}, _, { dataSources }) => {
+      return await dataSources.db.user(user_id);
     }
   }
 };

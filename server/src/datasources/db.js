@@ -14,8 +14,15 @@ class MyDatabase extends SQLDataSource {
     return this.knex
       .select('*')
       .from('messages')
-      .where({roomid: id})
-      .orderBy('timecreated', 'desc')
+      .where({room_id: id})
+      .orderBy('time_created', 'desc')
+      .cache(MINUTE);
+  }
+  user(id) {
+    return this.knex
+      .select('*')
+      .from('users')
+      .where({id: id})
       .cache(MINUTE);
   }
 }
