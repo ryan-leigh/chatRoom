@@ -9,6 +9,7 @@
     "apollo-server-express": "^3.11.1",
     "datasource-sql": "^2.0.1",
     "graphql": "^16.6.0",
+    "graphql-subscriptions": "^2.0.0",
     "graphql-ws": "^5.11.3",
     "http": "^0.0.1-security",
     "pg": "^8.9.0",

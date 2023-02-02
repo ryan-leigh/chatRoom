@@ -1,4 +1,4 @@
-require('dotenv').config()
+require('dotenv').config();
 const MyDatabase = require('./datasources/db.js');
 const typeDefs = require('./schema');
 const resolvers = require('./resolvers');
@@ -10,6 +10,7 @@ const { ApolloServerPluginDrainHttpServer } = require('@apollo/server/plugin/dra
 const { makeExecutableSchema } = require('@graphql-tools/schema');
 const { WebSocketServer } = require('ws');
 const { useServer } = require('graphql-ws/lib/use/ws');
+import { PubSub } from 'graphql-subscriptions';
 
 // Create schema
 const schema = makeExecutableSchema({ typeDefs, resolvers });
