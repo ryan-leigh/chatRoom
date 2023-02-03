@@ -25,6 +25,15 @@ class MyDatabase extends SQLDataSource {
       .where({id: id})
       .cache(MINUTE);
   }
+  createMessage(userId, roomId, body, timeCreated) {
+    return this.knex
+      .insert({user_id: userId, room_id: roomId, body, time_created: timeCreated})
+      .returning(['id', 'user_id', 'room_id', 'body', 'time_created'])
+      .into('messages')
+      .then((returnVal) => {
+        return returnVal[0];
+      });
+  }
 }
 
 module.exports = MyDatabase;

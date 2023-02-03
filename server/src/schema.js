@@ -8,12 +8,12 @@ const typeDefs = gql`
   }
 
   type Mutation {
-    createMessage(roomId: ID!): CreateMessageResponse!
+    createMessage(userId: ID!, roomId: ID!, body: String, timeCreated: Int): CreateMessageResponse!
   }
 
   type Subscription {
     "Get message objects from a specific room"
-    messagesForRoom(id: ID!): [Message!]!
+    newMessage: NewMessage!
   }
 
   "PRIMARY TYPES"
@@ -35,6 +35,16 @@ const typeDefs = gql`
     body: String
     time_created: Int!
     author: User
+  }
+
+  type NewMessage {
+    id: ID!
+    body: String
+    time_created: Int!
+    author_id: ID!
+    author_name: String!
+    author_email: String
+    author_updated_at: Int
   }
 
   "MUTATION RESPONSES"

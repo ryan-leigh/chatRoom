@@ -4,13 +4,17 @@ const typeDefs = require('./schema');
 const resolvers = require('./resolvers');
 const express = require('express');
 const path = require('path');
+const cors = require('cors');
+const { json } = require('body-parser');
+const { expressMiddleware } = require('@apollo/server/express4');
 const { ApolloServer, gql } = require('apollo-server-express');
 const { createServer } = require('http');
 const { ApolloServerPluginDrainHttpServer } = require('@apollo/server/plugin/drainHttpServer');
 const { makeExecutableSchema } = require('@graphql-tools/schema');
 const { WebSocketServer } = require('ws');
 const { useServer } = require('graphql-ws/lib/use/ws');
-import { PubSub } from 'graphql-subscriptions';
+const { PubSub, withFilter } = require('graphql-subscriptions');
+const pubSub = new PubSub();
 
 // Create schema
 const schema = makeExecutableSchema({ typeDefs, resolvers });
@@ -32,9 +36,14 @@ const db = new MyDatabase(knexConfig);
 const port = process.env.PORT;
 const app = express();
 const httpServer = createServer(app);
-const apolloServer = new ApolloServer({
+const wsServer = new WebSocketServer({
+  server: httpServer,
+  path: '/graphql'
+});
+const serverCleanup = useServer({ schema }, wsServer);
+const server = new ApolloServer({
   schema,
-  dataSources: () => ({ db }),
+  dataSources: () => ({ db, pubSub }),
   plugins: [
     // Proper shutdown for the HTTP server.
     ApolloServerPluginDrainHttpServer({ httpServer }),
@@ -51,24 +60,18 @@ const apolloServer = new ApolloServer({
     },
   ]
 });
-const wsServer = new WebSocketServer({
-  server: httpServer,
-  path: '/graphql'
-});
-const serverCleanup = useServer({ schema }, wsServer);
 
 // Start servers
 const start = async () => {
-  await apolloServer.start()
+  await server.start()
     .then(() => {
+      //app.use('/graphql', cors(), json(), expressMiddleware(server));
+      server.applyMiddleware({ app })
       app.use(express.static(path.join(__dirname, '../../client/dist')));
     })
     .then(() => {
-      apolloServer.applyMiddleware({ app });
-    })
-    .then(() => {
       httpServer.listen({ port }, () => {
-        console.log(`🚀 Server ready at http://localhost:3000${apolloServer.graphqlPath}`);
+        console.log(`🚀 Server ready at http://localhost:3000${server.graphqlPath}`);
       });
     });
 }

@@ -1,3 +1,6 @@
+const { PubSub, withFilter } = require('graphql-subscriptions');
+const pubSub = new PubSub();
+
 const resolvers = {
   Query: {
     room: async (_, { id }, { dataSources }) => {
@@ -7,27 +10,49 @@ const resolvers = {
   },
 
   Mutation: {
-    // createMessage: async (_, { userId, roomId, body, timeCreated }, { dataSources }) => {
-    //   return await dataSources.db.createMessage(userId, roomId, body, timeCreated);
-    //   return await sql`
-    //     INSERT INTO messages (userId, roomId, body, timeCreated)
-    //     VALUES (${userId}, ${roomId}, '${body}', ${timeCreated});
-    //   `
-    //     .then(() => {
-    //       return {
-    //         code: 200,
-    //         success: true,
-    //         message: 'Successfully created message'
-    //       }
-    //     })
-    //     .catch((err) => {
-    //       return {
-    //         code: err.extensions.response.status,
-    //         success: false,
-    //         message: err.extensions.response.body
-    //       }
-    //     })
-    // }
+    createMessage: async (_, { userId, roomId, body, timeCreated }, { dataSources }) => {
+      return await dataSources.db.createMessage(userId, roomId, body, timeCreated)
+        .then(async (response) => {
+          const author = await dataSources.db.user(userId)
+            .then(userArr => userArr[0]);
+          const returnObj = {
+            id: response.id,
+            body: response.body,
+            time_created: response.time_created,
+            author_id: author.id,
+            author_name: author.name,
+            author_email: author.email,
+            author_updated_at: author.updated_at
+          }
+          pubSub.publish(`NEW_MESSAGE`, {newMessage: returnObj});
+          return {
+            code: 200,
+            success: true,
+            message: 'Successfully created message',
+          }
+        })
+        .catch((err) => {
+          console.log(`Error creating message: ${err}`)
+          return {
+            code: err.extensions.response.status,
+            success: false,
+            message: err.extensions.response.body
+          }
+        });
+    }
+  },
+
+  Subscription: {
+    newMessage: {
+      subscribe: withFilter(
+        () => pubSub.asyncIterator([`NEW_MESSAGE`]),
+        (payload, variables) => {
+          return (
+            payload.newMessage.roomId === variables.roomId
+          )
+        }
+      )
+    }
   },
 
   Room: {
@@ -37,8 +62,10 @@ const resolvers = {
   },
 
   Message: {
-    author: async ({user_id}, _, { dataSources }) => {
-      return await dataSources.db.user(user_id);
+    author: async ({ user_id }, _, { dataSources }) => {
+      console.log('hello')
+      return await dataSources.db.user(user_id)
+        .then(userArr => userArr[0]);
     }
   }
 };
