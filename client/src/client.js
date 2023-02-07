@@ -33,7 +33,7 @@ export const currentPage = makeVar('login');
 
 // Queries
 export const GET_ROOM = gql`
-  query getRoom($roomId: ID!) {
+  query GetRoom($roomId: ID!) {
     room(id: $roomId) {
       name
       messages {
@@ -56,14 +56,13 @@ export const GET_ROOM = gql`
 // Subscriptions
 export const MESSAGES_SUBSCRIPTION = gql`
   subscription OnMessageCreated($roomId: ID!) {
-    newMessage(roomId: $roomId) {
+    newMessage (roomId: $roomId) {
       id
       body
       time_created
       author_id
       author_name
       author_email
-      author_updated_at
     }
   }
 `;

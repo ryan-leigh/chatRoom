@@ -15,8 +15,7 @@ class MyDatabase extends SQLDataSource {
       .select('*')
       .from('messages')
       .where({room_id: id})
-      .orderBy('time_created', 'desc')
-      .cache(MINUTE);
+      .orderBy('id');
   }
   user(id) {
     return this.knex

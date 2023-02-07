@@ -19,6 +19,7 @@ const resolvers = {
             id: response.id,
             body: response.body,
             time_created: response.time_created,
+            roomId,
             author_id: author.id,
             author_name: author.name,
             author_email: author.email,

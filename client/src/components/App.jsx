@@ -20,7 +20,7 @@ const App = () => {
     case 'room':
       return (
         <>
-          <Room roomId='1' />
+          <Room roomId={1} />
         </>
       )
     default:
