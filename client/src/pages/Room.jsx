@@ -26,9 +26,7 @@ const Room = ({ roomId }) => {
           variables: { roomId },
           updateQuery: (prev, { subscriptionData }) => {
             if (!subscriptionData.data) return prev;
-            const returnObj = Object.assign({}, prev);
-            console.log('Return object: ' + returnObj);
-            returnObj.room.messages.push({
+            const newMessage = {
               id: subscriptionData.data.newMessage.id,
               body: subscriptionData.data.newMessage.body,
               time_created: subscriptionData.data.newMessage.time_created,
@@ -37,8 +35,17 @@ const Room = ({ roomId }) => {
                 id: subscriptionData.data.newMessage.author_id,
                 name: subscriptionData.data.newMessage.author_name,
               }
+            }
+            return Object.assign({}, prev, {
+              room: {
+                messages: [...prev.room.messages, newMessage]
+              }
             })
-            return returnObj;
+            // let returnObj = {...prev};
+            // console.log(newMessage);
+            // console.log(JSON.stringify(returnObj));
+            // returnObj.room.messages.push(newMessage)
+            // return returnObj;
           },
           onError: (err) => console.log(err)
         })}/>
