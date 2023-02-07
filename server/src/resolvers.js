@@ -10,8 +10,8 @@ const resolvers = {
   },
 
   Mutation: {
-    createMessage: async (_, { userId, roomId, body, timeCreated }, { dataSources }) => {
-      return await dataSources.db.createMessage(userId, roomId, body, timeCreated)
+    createMessage: (_, { userId, roomId, body, timeCreated }, { dataSources }) => {
+      return dataSources.db.createMessage(userId, roomId, body, timeCreated)
         .then(async (response) => {
           const author = await dataSources.db.user(userId)
             .then(userArr => userArr[0]);
