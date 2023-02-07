@@ -1,20 +1,35 @@
 import React from 'react';
-import { useQuery, useReactiveVar } from '@apollo/client';
-import { currentPage, currentUser, GET_ROOM_MESSAGES } from '../client';
+import { useQuery, useSubscription, useReactiveVar } from '@apollo/client';
+import { currentPage, currentUser, GET_ROOM, MESSAGES_SUBSCRIPTION } from '../client';
 import MessagesList from '../components/MessagesList.jsx';
 
 const Room = ({ roomId }) => {
   console.log('room page')
+  console.log(GET_ROOM)
 
-  const { loading, error, data } = useQuery(GET_ROOM_MESSAGES);
+  const roomQuery = useQuery(GET_ROOM, {
+    variables: {roomId: 1}
+  });
   useReactiveVar(currentPage);
 
-  return (
-    <div>
-      <div>Title</div>
-      <MessagesList messages={messages} />
-    </div>
-  )
+  const messagesSubscription = useSubscription(MESSAGES_SUBSCRIPTION, { variables: { roomId } })
+  console.log(roomQuery.data)
+  if (roomQuery.loading) {
+    return (
+      <div>loading...</div>
+    )
+  } else {
+    return (
+      <div>
+        {/*Room name*/}
+        <div>{roomQuery.data.room.name}</div>
+        <MessagesList messages={roomQuery} subscribeToNewMessages={() => messagesQuery.subcribeToMore({
+          document: MESSAGES_SUBSCRIPTION,
+          variables: { roomId }
+        })}/>
+      </div>
+    )
+  }
 }
 
 export default Room;

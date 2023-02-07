@@ -43,7 +43,7 @@ const wsServer = new WebSocketServer({
 const serverCleanup = useServer({ schema }, wsServer);
 const server = new ApolloServer({
   schema,
-  dataSources: () => ({ db, pubSub }),
+  dataSources: () => ({ db }),
   plugins: [
     // Proper shutdown for the HTTP server.
     ApolloServerPluginDrainHttpServer({ httpServer }),

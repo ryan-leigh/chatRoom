@@ -2,10 +2,11 @@ import React from 'react';
 import Message from './Message.jsx';
 
 const MessagesList = ({ messages }) => {
+  console.log(messages.data);
   return (
     <div>
-      {messages.map((message) => (
-        <Message message={message} />
+      {messages.data.room.messages.map((message) => (
+        <Message message={message} key={message.id}/>
       ))}
     </div>
   )

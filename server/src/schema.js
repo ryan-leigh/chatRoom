@@ -13,7 +13,7 @@ const typeDefs = gql`
 
   type Subscription {
     "Get message objects from a specific room"
-    newMessage: NewMessage!
+    newMessage(roomId: ID!): NewMessage!
   }
 
   "PRIMARY TYPES"

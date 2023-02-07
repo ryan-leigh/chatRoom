@@ -63,7 +63,6 @@ const resolvers = {
 
   Message: {
     author: async ({ user_id }, _, { dataSources }) => {
-      console.log('hello')
       return await dataSources.db.user(user_id)
         .then(userArr => userArr[0]);
     }
