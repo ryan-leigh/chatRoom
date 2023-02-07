@@ -8,6 +8,7 @@ const typeDefs = gql`
   }
 
   type Mutation {
+    createUser(username: String!, email: String!, updated_at: Int!): CreateUserResponse!
     createMessage(userId: ID!, roomId: ID!, body: String, timeCreated: Int): CreateMessageResponse!
   }
 
@@ -48,6 +49,13 @@ const typeDefs = gql`
   }
 
   "MUTATION RESPONSES"
+  type CreateUserResponse {
+    code: Int!
+    success: Boolean!
+    message: String!
+    newUser: User
+  }
+
   type CreateMessageResponse {
     code: Int!
     success: Boolean!
