@@ -53,6 +53,7 @@ const typeDefs = gql`
     code: Int!
     success: Boolean!
     message: String!
+    uniqueIssue: Boolean
     newUser: User
   }
 

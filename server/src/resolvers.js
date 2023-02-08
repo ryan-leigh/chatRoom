@@ -10,12 +10,44 @@ const resolvers = {
   },
 
   Mutation: {
+    createUser: async (_, { username, email, updated_at }, { dataSources }) => {
+      try {
+        const userQuery = await dataSources.db.userByUsernameOrEmail(username, email);
+        if (userQuery.length > 0) {
+          return {
+            code: 409,
+            success: false,
+            message: 'User with username or email already exists',
+            uniqueIssue: true
+          }
+        } else {
+          return dataSources.db.createUser(username, email, updated_at)
+            .then((newUser) => {
+              return {
+                code: 200,
+                success: true,
+                message: 'Successfully created user',
+                newUser
+              }
+            })
+        }
+      } catch (err) {
+        return {
+          code: err.extensions.response.status,
+          success: false,
+          message: err.extensions.response.body,
+          uniqueIssue: false
+        }
+      }
+    },
+
     createMessage: (_, { userId, roomId, body, timeCreated }, { dataSources }) => {
-      return dataSources.db.createMessage(userId, roomId, body, timeCreated)
+      try {
+        return dataSources.db.createMessage(userId, roomId, body, timeCreated)
         .then(async (response) => {
           const author = await dataSources.db.user(userId)
             .then(userArr => userArr[0]);
-          const returnObj = {
+          pubSub.publish(`NEW_MESSAGE`, {newMessage: {
             id: response.id,
             body: response.body,
             time_created: response.time_created,
@@ -24,22 +56,21 @@ const resolvers = {
             author_name: author.name,
             author_email: author.email,
             author_updated_at: author.updated_at
-          }
-          pubSub.publish(`NEW_MESSAGE`, {newMessage: returnObj});
+          }});
           return {
             code: 200,
             success: true,
             message: 'Successfully created message',
           }
         })
-        .catch((err) => {
-          console.log(`Error creating message: ${err}`)
-          return {
-            code: err.extensions.response.status,
-            success: false,
-            message: err.extensions.response.body
-          }
-        });
+      } catch (err) {
+        console.log(`Error creating message: ${err}`)
+        return {
+          code: err.extensions.response.status,
+          success: false,
+          message: err.extensions.response.body
+        }
+      }
     }
   },
 

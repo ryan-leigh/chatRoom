@@ -41,11 +41,6 @@ const Room = ({ roomId }) => {
                 messages: [...prev.room.messages, newMessage]
               }
             })
-            // let returnObj = {...prev};
-            // console.log(newMessage);
-            // console.log(JSON.stringify(returnObj));
-            // returnObj.room.messages.push(newMessage)
-            // return returnObj;
           },
           onError: (err) => console.log(err)
         })}/>

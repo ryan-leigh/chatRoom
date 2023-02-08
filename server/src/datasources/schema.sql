@@ -30,3 +30,11 @@ CREATE TABLE messages (
     FOREIGN KEY(room_id)
       REFERENCES rooms(id)
 );
+
+ALTER TABLE users
+  ADD CONSTRAINT username_unique
+  UNIQUE (name);
+
+ALTER TABLE users
+  ADD CONSTRAINT email_unique
+  UNIQUE (email);
