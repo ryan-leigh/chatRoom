@@ -11,7 +11,6 @@ CREATE TABLE rooms (
 CREATE TABLE users (
   id serial,
   "name" text,
-  email text,
   updated_at int,
   PRIMARY KEY(id)
 );
@@ -34,7 +33,3 @@ CREATE TABLE messages (
 ALTER TABLE users
   ADD CONSTRAINT username_unique
   UNIQUE (name);
-
-ALTER TABLE users
-  ADD CONSTRAINT email_unique
-  UNIQUE (email);

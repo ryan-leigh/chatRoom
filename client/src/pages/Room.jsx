@@ -5,13 +5,18 @@ import MessagesList from '../components/MessagesList.jsx';
 
 const Room = ({ roomId }) => {
   console.log('room page')
+  // State
+  useReactiveVar(currentPage);
+  useReactiveVar(currentUser);
+  console.log(currentUser())
+
+  // Queries & Mutations
   const roomQuery = useQuery(GET_ROOM, {
     variables: { roomId }
   });
-  useReactiveVar(currentPage);
-
   const messagesSubscription = useSubscription(MESSAGES_SUBSCRIPTION, { variables: { roomId } })
-  console.log(roomQuery.data)
+
+  // Elements
   if (roomQuery.loading) {
     return (
       <div>loading...</div>
@@ -20,7 +25,7 @@ const Room = ({ roomId }) => {
     return (
       <div>
         {/*Room name*/}
-        <div>{roomQuery.data.room.name}</div>
+        <h1>{roomQuery.data.room.name}</h1>
         <MessagesList messages={roomQuery} subscribeToNewMessages={() => roomQuery.subscribeToMore({
           document: MESSAGES_SUBSCRIPTION,
           variables: { roomId },
