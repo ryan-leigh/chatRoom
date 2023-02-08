@@ -14,7 +14,10 @@ const Login = () => {
 
   return (
     <div>
-      <input type="text" value={username} onChange={(e) => {setUsername(e.target.value)}} />
+      <div>
+        <span>Username: </span>
+        <input type="text" value={username} onChange={(e) => {setUsername(e.target.value)}} />
+      </div>
       <button onClick={() => handleUsernameSubmit()}>Enter</button>
     </div>
   )

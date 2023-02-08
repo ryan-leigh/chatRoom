@@ -8,7 +8,7 @@ const typeDefs = gql`
   }
 
   type Mutation {
-    createUser(username: String!, email: String!, updated_at: Int!): CreateUserResponse!
+    createUser(username: String!, updated_at: Int!): CreateUserResponse!
     createMessage(userId: ID!, roomId: ID!, body: String, timeCreated: Int): CreateMessageResponse!
   }
 
@@ -27,7 +27,6 @@ const typeDefs = gql`
   type User {
     id: ID!
     name: String!
-    email: String
     updated_at: Int
   }
 
@@ -44,7 +43,6 @@ const typeDefs = gql`
     time_created: Int!
     author_id: ID!
     author_name: String!
-    author_email: String
     author_updated_at: Int
   }
 

@@ -31,7 +31,6 @@ const Room = ({ roomId }) => {
               body: subscriptionData.data.newMessage.body,
               time_created: subscriptionData.data.newMessage.time_created,
               author: {
-                email: subscriptionData.data.newMessage.author_email,
                 id: subscriptionData.data.newMessage.author_id,
                 name: subscriptionData.data.newMessage.author_name,
               }

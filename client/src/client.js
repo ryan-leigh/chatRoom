@@ -45,7 +45,6 @@ export const GET_ROOM = gql`
         author {
           id
           name
-          email
           updated_at
         }
       }
@@ -54,6 +53,21 @@ export const GET_ROOM = gql`
 `;
 
 // Mutations
+export const CREATE_USER = gql`
+  mutation Mutation($username: String!, $updatedAt: Int!) {
+    createUser(username: $username, updated_at: $updatedAt) {
+      code
+      success
+      message
+      uniqueIssue
+      newUser {
+        id
+        name
+        updated_at
+      }
+    }
+  }
+`;
 
 // Subscriptions
 export const MESSAGES_SUBSCRIPTION = gql`
@@ -64,7 +78,6 @@ export const MESSAGES_SUBSCRIPTION = gql`
       time_created
       author_id
       author_name
-      author_email
     }
   }
 `;

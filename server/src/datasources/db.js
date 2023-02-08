@@ -24,21 +24,20 @@ class MyDatabase extends SQLDataSource {
       .where({id: id})
       .cache(MINUTE);
   }
-  userByUsernameOrEmail(username, email) {
+  userByUsername(username) {
     return this.knex
       .select('*')
       .from('users')
-      .where({name: username})
-      .orWhere({email})
+      .where({name: username});
   }
-  createUser(username, email, updated_at) {
+  createUser(username, updated_at) {
     return this.knex
-      .insert({name: username, email, updated_at})
+      .insert({name: username, updated_at})
       .returning('*')
       .into('users')
       .then((sqlResponse) => {
         return sqlResponse[0];
-      })
+      });
   }
   createMessage(userId, roomId, body, timeCreated) {
     return this.knex

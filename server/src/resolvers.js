@@ -10,18 +10,18 @@ const resolvers = {
   },
 
   Mutation: {
-    createUser: async (_, { username, email, updated_at }, { dataSources }) => {
+    createUser: async (_, { username, updated_at }, { dataSources }) => {
       try {
-        const userQuery = await dataSources.db.userByUsernameOrEmail(username, email);
+        const userQuery = await dataSources.db.userByUsername(username);
         if (userQuery.length > 0) {
           return {
             code: 409,
             success: false,
-            message: 'User with username or email already exists',
+            message: 'User with that username already exists',
             uniqueIssue: true
           }
         } else {
-          return dataSources.db.createUser(username, email, updated_at)
+          return dataSources.db.createUser(username, updated_at)
             .then((newUser) => {
               return {
                 code: 200,
@@ -54,7 +54,6 @@ const resolvers = {
             roomId,
             author_id: author.id,
             author_name: author.name,
-            author_email: author.email,
             author_updated_at: author.updated_at
           }});
           return {
