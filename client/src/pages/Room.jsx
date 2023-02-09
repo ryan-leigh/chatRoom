@@ -2,19 +2,20 @@ import React from 'react';
 import { useQuery, useSubscription, useReactiveVar } from '@apollo/client';
 import { currentPage, currentUser, GET_ROOM, MESSAGES_SUBSCRIPTION } from '../client';
 import MessagesList from '../components/MessagesList.jsx';
+import NewMessage from '../components/NewMessage.jsx';
 
 const Room = ({ roomId }) => {
   console.log('room page')
   // State
   useReactiveVar(currentPage);
   useReactiveVar(currentUser);
-  console.log(currentUser())
 
   // Queries & Mutations
   const roomQuery = useQuery(GET_ROOM, {
     variables: { roomId }
   });
-  const messagesSubscription = useSubscription(MESSAGES_SUBSCRIPTION, { variables: { roomId } })
+  const messagesSubscription = useSubscription(MESSAGES_SUBSCRIPTION, {variables: { roomId }});
+
 
   // Elements
   if (roomQuery.loading) {
@@ -48,6 +49,7 @@ const Room = ({ roomId }) => {
           },
           onError: (err) => console.log(err)
         })}/>
+        <NewMessage roomId={roomId} />
       </div>
     )
   }
