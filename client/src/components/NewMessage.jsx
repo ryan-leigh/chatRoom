@@ -3,7 +3,6 @@ const { useState } = React;
 import { useMutation, useReactiveVar } from '@apollo/client';
 import { currentUser, CREATE_MESSAGE } from '../client.js';
 
-
 const NewMessage = ({ roomId }) => {
   // State
   useReactiveVar(currentUser);
@@ -23,6 +22,7 @@ const NewMessage = ({ roomId }) => {
         timeCreated: Math.floor(Date.now()/1000)
       }
     })
+    setNewMessageText('');
   }
 
   // Elements
