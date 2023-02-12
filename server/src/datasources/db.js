@@ -10,12 +10,14 @@ class MyDatabase extends SQLDataSource {
       .where({id: id})
       .cache(MINUTE);
   }
-  messages(id) {
+  messages(id, offset) {
     return this.knex
       .select('*')
       .from('messages')
       .where({room_id: id})
-      .orderBy('id');
+      .orderBy('id')
+      .limit('20')
+      .offset(offset);
   }
   user(id) {
     return this.knex

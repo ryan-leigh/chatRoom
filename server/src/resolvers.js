@@ -87,7 +87,7 @@ const resolvers = {
   },
 
   Room: {
-    messages: async ({ id }, _, { dataSources }) => {
+    messages: async ({ id, offset }, _, { dataSources }) => {
       return await dataSources.db.messages(id);
     }
   },

@@ -36,7 +36,7 @@ export const currentPage = makeVar('login');
 // Queries
 export const GET_ROOM = gql`
   query GetRoom($roomId: ID!) {
-    room(id: $roomId) {
+    room(id: $roomId, offset: 0) {
       id
       name
       messages {
@@ -52,6 +52,23 @@ export const GET_ROOM = gql`
     }
   }
 `;
+
+export const GET_MORE_MESSAGES = gql`
+  query GetMoreMessages($roomId: ID!, $offset: Int!) {
+    room(id: $roomId, offset: $offset) {
+      messages {
+        id
+        body
+        time_created
+        author {
+          id
+          name
+          updated_at
+        }
+      }
+    }
+  }
+`
 
 // Mutations
 export const CREATE_USER = gql`
