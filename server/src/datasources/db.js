@@ -10,21 +10,21 @@ class MyDatabase extends SQLDataSource {
       .where({id: id})
       .cache(MINUTE);
   }
-  messages(id, offset) {
+  messages(id, offset, addLimit) {
+    console.log(addLimit)
     return this.knex
       .select('*')
       .from('messages')
       .where({room_id: id})
-      .orderBy('id')
-      .limit('20')
+      .orderBy('id', 'desc')
+      .limit(20 + addLimit)
       .offset(offset);
   }
   user(id) {
     return this.knex
       .select('*')
       .from('users')
-      .where({id: id})
-      .cache(MINUTE);
+      .where({id: id});
   }
   userByUsername(username) {
     return this.knex

@@ -4,7 +4,8 @@ const typeDefs = gql`
   type Query {
     "Get message objects for all messages sent by a specific user"
     user(id: ID!): User!
-    room(id: ID!, offset: Int!): Room!
+    room(id: ID!, addLimit: Int!): Room!
+    messages(id: ID!, offset: Int!): [Message!]!
   }
 
   type Mutation {

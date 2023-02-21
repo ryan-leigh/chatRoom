@@ -26,7 +26,17 @@ const splitLink = split(
 export const client = new ApolloClient({
   // uri: 'http://localhost:3000/graphql',
   link: splitLink,
-  cache: new InMemoryCache()
+  cache: new InMemoryCache({
+    typePolicies: {
+      Query: {
+        fields: {
+          room: {
+            keyArgs: [id]
+          }
+        }
+      }
+    }
+  })
 });
 
 // Variables
@@ -35,8 +45,8 @@ export const currentPage = makeVar('login');
 
 // Queries
 export const GET_ROOM = gql`
-  query GetRoom($roomId: ID!) {
-    room(id: $roomId, offset: 0) {
+  query GetRoom($id: ID!, $addLimit: Int!) {
+    room(id: $id, addLimit: $addLimit) {
       id
       name
       messages {
@@ -53,22 +63,20 @@ export const GET_ROOM = gql`
   }
 `;
 
-export const GET_MORE_MESSAGES = gql`
-  query GetMoreMessages($roomId: ID!, $offset: Int!) {
-    room(id: $roomId, offset: $offset) {
-      messages {
-        id
-        body
-        time_created
-        author {
-          id
-          name
-          updated_at
-        }
-      }
-    }
-  }
-`
+// export const GET_MORE_MESSAGES = gql`
+//   query GetMoreMessages($id: ID!, $offset: Int!) {
+//     messages(id: $id, offset: $offset) {
+//       id
+//       body
+//       time_created
+//       author {
+//         id
+//         name
+//         updated_at
+//       }
+//     }
+//   }
+// `
 
 // Mutations
 export const CREATE_USER = gql`

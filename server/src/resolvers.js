@@ -3,9 +3,17 @@ const pubSub = new PubSub();
 
 const resolvers = {
   Query: {
-    room: async (_, { id }, { dataSources }) => {
-      return await dataSources.db.room(id)
-        .then(result => result[0]);
+    room: (_, { id, addLimit }, { dataSources }) => {
+      console.log('room request!')
+      return dataSources.db.room(id)
+        .then(result => {
+          result[0].addLimit = addLimit;
+          return result[0];
+      });
+    },
+    messages: (_, { id, offset }, { dataSources }) => {
+      console.log('request!')
+      return dataSources.db.messages(id, offset, 0);
     }
   },
 
@@ -87,8 +95,8 @@ const resolvers = {
   },
 
   Room: {
-    messages: async ({ id, offset }, _, { dataSources }) => {
-      return await dataSources.db.messages(id);
+    messages: async ({ id, offset, addLimit }, _, { dataSources }) => {
+      return await dataSources.db.messages(id, offset, addLimit);
     }
   },
 
