@@ -31,7 +31,7 @@ export const client = new ApolloClient({
       Query: {
         fields: {
           room: {
-            keyArgs: [id]
+            keyArgs: ['id']
           }
         }
       }
@@ -45,8 +45,8 @@ export const currentPage = makeVar('login');
 
 // Queries
 export const GET_ROOM = gql`
-  query GetRoom($id: ID!, $addLimit: Int!) {
-    room(id: $id, addLimit: $addLimit) {
+  query GetRoom($id: ID!) {
+    room(id: $id) {
       id
       name
       messages {

@@ -3,18 +3,15 @@ const pubSub = new PubSub();
 
 const resolvers = {
   Query: {
-    room: (_, { id, addLimit }, { dataSources }) => {
+    room: (_, { id }, { dataSources }) => {
       console.log('room request!')
       return dataSources.db.room(id)
-        .then(result => {
-          result[0].addLimit = addLimit;
-          return result[0];
-      });
+        .then(result => result[0]);
     },
-    messages: (_, { id, offset }, { dataSources }) => {
-      console.log('request!')
-      return dataSources.db.messages(id, offset, 0);
-    }
+    // messages: (_, { id, offset }, { dataSources }) => {
+    //   console.log('request!')
+    //   return dataSources.db.messages(id, offset, 0);
+    // }
   },
 
   Mutation: {

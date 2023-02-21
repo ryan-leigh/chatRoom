@@ -3,7 +3,7 @@ const { useState } = React;
 import { useQuery, useSubscription, useReactiveVar } from '@apollo/client';
 import { currentPage, currentUser, GET_ROOM, MESSAGES_SUBSCRIPTION } from '../client';
 import MessagesList from '../components/MessagesList.jsx';
-import NewMessage from '../components/NewMessage.jsx';
+import SubmitNewMessage from '../components/SubmitNewMessage.jsx';
 
 const Room = ({ roomId }) => {
   console.log('room page')
@@ -13,8 +13,8 @@ const Room = ({ roomId }) => {
   const [newMessageCount, setNewMessageCount] = useState(0);
 
   // Queries & Mutations
-  const roomQuery = useQuery(GET_ROOM, {variables: { roomId, addLimit: newMessageCount }});
-  const messagesSubscription = useSubscription(MESSAGES_SUBSCRIPTION, {variables: { roomId }});
+  const roomQuery = useQuery(GET_ROOM, {variables: { id: roomId }});
+  const messagesSubscription = useSubscription(MESSAGES_SUBSCRIPTION, {variables: { id: roomId }});
 
   console.log(newMessageCount);
 
@@ -53,7 +53,7 @@ const Room = ({ roomId }) => {
           },
           onError: (err) => console.log(err)
         })}/>
-        <NewMessage roomId={roomId} />
+        <SubmitNewMessage roomId={roomId} />
       </div>
     )
   }

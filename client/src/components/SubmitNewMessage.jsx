@@ -3,7 +3,7 @@ const { useState } = React;
 import { useMutation, useReactiveVar } from '@apollo/client';
 import { currentUser, CREATE_MESSAGE } from '../client.js';
 
-const NewMessage = ({ roomId }) => {
+const SubmitNewMessage = ({ roomId }) => {
   // State
   useReactiveVar(currentUser);
   console.log(currentUser());
@@ -34,4 +34,4 @@ const NewMessage = ({ roomId }) => {
   )
 }
 
-export default NewMessage;
+export default SubmitNewMessage;
