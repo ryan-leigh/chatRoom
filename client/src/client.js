@@ -112,8 +112,11 @@ export const MESSAGES_SUBSCRIPTION = gql`
       id
       body
       time_created
-      author_id
-      author_name
+      author {
+        id
+        name
+        updated_at
+      }
     }
   }
 `;

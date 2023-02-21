@@ -4,11 +4,11 @@ const MINUTE = 60;
 
 class MyDatabase extends SQLDataSource {
   room(id) {
+    console.log('in room')
     return this.knex
       .select('*')
       .from('rooms')
-      .where({id: id})
-      .cache(MINUTE);
+      .where({id: id});
   }
   messages(id, offset) {
     return this.knex

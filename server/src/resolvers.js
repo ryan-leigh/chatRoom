@@ -5,8 +5,13 @@ const resolvers = {
   Query: {
     room: (_, { id }, { dataSources }) => {
       console.log('room request!')
+      console.log(id);
       return dataSources.db.room(id)
-        .then(result => result[0]);
+        .then(result => {
+          console.log(result[0]);
+          return result[0];
+        })
+        .catch(err => console.log(err));
     },
     // messages: (_, { id, offset }, { dataSources }) => {
     //   console.log('request!')
@@ -52,19 +57,24 @@ const resolvers = {
         .then(async (response) => {
           const author = await dataSources.db.user(userId)
             .then(userArr => userArr[0]);
-          pubSub.publish(`NEW_MESSAGE`, {newMessage: {
+          const newMessage = {
             id: response.id,
             body: response.body,
             time_created: response.time_created,
             roomId,
-            author_id: author.id,
-            author_name: author.name,
-            author_updated_at: author.updated_at
-          }});
+            user_id: userId,
+            author: {
+              id: author.id,
+              name: author.name,
+              updated_at: author.updated_at
+            }
+          }
+          pubSub.publish(`NEW_MESSAGE`, {newMessage});
           return {
             code: 200,
             success: true,
             message: 'Successfully created message',
+            newMessage
           }
         })
       } catch (err) {
@@ -99,6 +109,7 @@ const resolvers = {
 
   Message: {
     author: async ({ user_id }, _, { dataSources }) => {
+      console.log('we here')
       return await dataSources.db.user(user_id)
         .then(userArr => userArr[0]);
     }

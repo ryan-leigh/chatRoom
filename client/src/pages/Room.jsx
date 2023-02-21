@@ -16,7 +16,7 @@ const Room = ({ roomId }) => {
   const roomQuery = useQuery(GET_ROOM, {variables: { id: roomId }});
   const messagesSubscription = useSubscription(MESSAGES_SUBSCRIPTION, {variables: { id: roomId }});
 
-  console.log(newMessageCount);
+  //console.log(newMessageCount);
 
   // Elements
   if (roomQuery.loading) {
@@ -35,6 +35,7 @@ const Room = ({ roomId }) => {
           variables: { roomId },
           updateQuery: (prev, { subscriptionData }) => {
             setNewMessageCount(newMessageCount + 1);
+            console.log(subscriptionData);
             if (!subscriptionData.data) return prev;
             const newMessage = {
               id: subscriptionData.data.newMessage.id,
@@ -51,7 +52,10 @@ const Room = ({ roomId }) => {
               }
             })
           },
-          onError: (err) => console.log(err)
+          onError: (err) => {
+            console.log('Subscription error');
+            console.log(err);
+          }
         })}/>
         <SubmitNewMessage roomId={roomId} />
       </div>

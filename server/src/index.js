@@ -7,7 +7,7 @@ const path = require('path');
 const cors = require('cors');
 const { json } = require('body-parser');
 const { expressMiddleware } = require('@apollo/server/express4');
-const { ApolloServer, gql } = require('apollo-server-express');
+const { ApolloServer, gql } = require('@apollo/server');
 const { createServer } = require('http');
 const { ApolloServerPluginDrainHttpServer } = require('@apollo/server/plugin/drainHttpServer');
 const { makeExecutableSchema } = require('@graphql-tools/schema');
@@ -41,32 +41,36 @@ const wsServer = new WebSocketServer({
   path: '/graphql'
 });
 const serverCleanup = useServer({ schema }, wsServer);
+// const server = new ApolloServer({
+//   schema,
+//   dataSources: () => ({ db }),
+//   plugins: [
+//     // Proper shutdown for the HTTP server.
+//     ApolloServerPluginDrainHttpServer({ httpServer }),
+
+//     // Proper shutdown for the WebSocket server.
+//     {
+//       async serverWillStart() {
+//         return {
+//           async drainServer() {
+//             await serverCleanup.dispose();
+//           },
+//         };
+//       },
+//     },
+//   ]
+// });
 const server = new ApolloServer({
-  schema,
-  dataSources: () => ({ db }),
-  plugins: [
-    // Proper shutdown for the HTTP server.
-    ApolloServerPluginDrainHttpServer({ httpServer }),
-
-    // Proper shutdown for the WebSocket server.
-    {
-      async serverWillStart() {
-        return {
-          async drainServer() {
-            await serverCleanup.dispose();
-          },
-        };
-      },
-    },
-  ]
-});
-
+  schema
+})
 // Start servers
 const start = async () => {
   await server.start()
     .then(() => {
-      //app.use('/graphql', cors(), json(), expressMiddleware(server));
-      server.applyMiddleware({ app })
+      app.use('/graphql', cors(), json(), expressMiddleware(server, {
+        context: async ({req}) => ({ dataSources: { db } })
+      }));
+      //server.applyMiddleware({ app })
       app.use(express.static(path.join(__dirname, '../../client/dist')));
     })
     .then(() => {
