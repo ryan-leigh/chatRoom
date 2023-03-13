@@ -10,7 +10,7 @@ const Room = ({ roomId }) => {
   // State
   useReactiveVar(currentPage);
   useReactiveVar(currentUser);
-  const [newMessageCount, setNewMessageCount] = useState(0);
+  //const [newMessageCount, setNewMessageCount] = useState(0);
 
   // Queries & Mutations
   const roomQuery = useQuery(GET_ROOM, {variables: { id: roomId }});
@@ -34,7 +34,7 @@ const Room = ({ roomId }) => {
           document: MESSAGES_SUBSCRIPTION,
           variables: { roomId },
           updateQuery: (prev, { subscriptionData }) => {
-            setNewMessageCount(newMessageCount + 1);
+            //setNewMessageCount(newMessageCount + 1);
             console.log(subscriptionData);
             if (!subscriptionData.data) return prev;
             const newMessage = {

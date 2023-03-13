@@ -40,28 +40,10 @@ const wsServer = new WebSocketServer({
   server: httpServer,
   path: '/graphql'
 });
-const serverCleanup = useServer({ schema }, wsServer);
-// const server = new ApolloServer({
-//   schema,
-//   dataSources: () => ({ db }),
-//   plugins: [
-//     // Proper shutdown for the HTTP server.
-//     ApolloServerPluginDrainHttpServer({ httpServer }),
-
-//     // Proper shutdown for the WebSocket server.
-//     {
-//       async serverWillStart() {
-//         return {
-//           async drainServer() {
-//             await serverCleanup.dispose();
-//           },
-//         };
-//       },
-//     },
-//   ]
-// });
+const serverCleanup = useServer({ schema, context:{ dataSources: { db }}}, wsServer);
 const server = new ApolloServer({
   schema,
+  dataSources: () => ({ db }),
   plugins: [
     // Proper shutdown for the HTTP server.
     ApolloServerPluginDrainHttpServer({ httpServer }),
@@ -77,14 +59,13 @@ const server = new ApolloServer({
       },
     },
   ]
-})
+});
+
 // Start servers
 const start = async () => {
   await server.start()
     .then(() => {
-      app.use('/graphql', cors(), json(), expressMiddleware(server, {
-        context: async ({req}) => ({ dataSources: { db } })
-      }));
+      app.use('/graphql', cors(), json(), expressMiddleware(server));
       //server.applyMiddleware({ app })
       app.use(express.static(path.join(__dirname, '../../client/dist')));
     })

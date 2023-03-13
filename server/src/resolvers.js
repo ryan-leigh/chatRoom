@@ -55,19 +55,20 @@ const resolvers = {
       try {
         return dataSources.db.createMessage(userId, roomId, body, timeCreated)
         .then(async (response) => {
-          const author = await dataSources.db.user(userId)
-            .then(userArr => userArr[0]);
+          // const author = await dataSources.db.user(userId)
+          //   .then(userArr => userArr[0]);
           const newMessage = {
             id: response.id,
             body: response.body,
             time_created: response.time_created,
             roomId,
             user_id: userId,
-            author: {
-              id: author.id,
-              name: author.name,
-              updated_at: author.updated_at
-            }
+            // author: {
+            //   id: author.id,
+            //   name: author.name,
+            //   updated_at: author.updated_at
+            // }
+            author: resolvers.Message.author({ user_id: userId }, {}, { dataSources })
           }
           pubSub.publish(`NEW_MESSAGE`, {newMessage});
           return {
@@ -110,10 +111,14 @@ const resolvers = {
   Message: {
     author: async ({ user_id }, _, { dataSources }) => {
       console.log('we here')
+      console.log(user_id);
+      if (dataSources) {
+        console.log('yes')
+      }
       return await dataSources.db.user(user_id)
-        .then(userArr => userArr[0]);
+        .then(userArr => userArr[0])
+        .catch(err => console.log(err));
     }
   }
 };
-
 module.exports = resolvers;
