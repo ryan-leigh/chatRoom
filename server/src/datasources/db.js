@@ -40,9 +40,9 @@ class MyDatabase extends SQLDataSource {
         return sqlResponse[0];
       });
   }
-  createMessage(userId, roomId, body, timeCreated) {
+  createMessage(author_id, roomId, body, timeCreated) {
     return this.knex
-      .insert({user_id: userId, room_id: roomId, body, time_created: timeCreated})
+      .insert({user_id: author_id, room_id: roomId, body, time_created: timeCreated})
       .returning('*')
       .into('messages')
       .then((sqlResponse) => {

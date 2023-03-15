@@ -30,7 +30,7 @@ const knexConfig = {
     password: process.env.PGPASSWORD
   }
 }
-const db = new MyDatabase(knexConfig);
+//const db = new MyDatabase(knexConfig);
 
 // Create servers
 const port = process.env.PORT;
@@ -40,10 +40,11 @@ const wsServer = new WebSocketServer({
   server: httpServer,
   path: '/graphql'
 });
-const serverCleanup = useServer({ schema, context:{ dataSources: { db }}}, wsServer);
+const serverCleanup = useServer({ schema, context: {
+  dataSources: { db: new MyDatabase(knexConfig) }
+}}, wsServer);
 const server = new ApolloServer({
   schema,
-  dataSources: () => ({ db }),
   plugins: [
     // Proper shutdown for the HTTP server.
     ApolloServerPluginDrainHttpServer({ httpServer }),
@@ -65,7 +66,15 @@ const server = new ApolloServer({
 const start = async () => {
   await server.start()
     .then(() => {
-      app.use('/graphql', cors(), json(), expressMiddleware(server));
+      app.use('/graphql', cors(), json(), expressMiddleware(server, {
+        context: async () => {
+          return {
+            dataSources: {
+              db: new MyDatabase(knexConfig)
+            }
+          }
+        }
+      }));
       //server.applyMiddleware({ app })
       app.use(express.static(path.join(__dirname, '../../client/dist')));
     })

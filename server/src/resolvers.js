@@ -51,24 +51,16 @@ const resolvers = {
       }
     },
 
-    createMessage: (_, { userId, roomId, body, timeCreated }, { dataSources }) => {
+    createMessage: (_, { authorId, roomId, body, timeCreated }, { dataSources }) => {
       try {
-        return dataSources.db.createMessage(userId, roomId, body, timeCreated)
+        return dataSources.db.createMessage(authorId, roomId, body, timeCreated)
         .then(async (response) => {
-          // const author = await dataSources.db.user(userId)
-          //   .then(userArr => userArr[0]);
           const newMessage = {
             id: response.id,
             body: response.body,
             time_created: response.time_created,
-            roomId,
-            user_id: userId,
-            // author: {
-            //   id: author.id,
-            //   name: author.name,
-            //   updated_at: author.updated_at
-            // }
-            author: resolvers.Message.author({ user_id: userId }, {}, { dataSources })
+            room_id: roomId,
+            authorId
           }
           pubSub.publish(`NEW_MESSAGE`, {newMessage});
           return {
@@ -95,7 +87,7 @@ const resolvers = {
         () => pubSub.asyncIterator([`NEW_MESSAGE`]),
         (payload, variables) => {
           return (
-            payload.newMessage.roomId === variables.roomId
+            payload.newMessage.room_id === variables.roomId
           )
         }
       )
@@ -109,15 +101,17 @@ const resolvers = {
   },
 
   Message: {
-    author: async ({ user_id }, _, { dataSources }) => {
+    author: async ({ authorId }, _, { dataSources }) => {
       console.log('we here')
-      console.log(user_id);
+      console.log(authorId);
       if (dataSources) {
-        console.log('yes')
+        console.log(dataSources)
       }
-      return await dataSources.db.user(user_id)
+      const author = await dataSources.db.user(authorId)
         .then(userArr => userArr[0])
         .catch(err => console.log(err));
+      console.log(author);
+      return author;
     }
   }
 };
