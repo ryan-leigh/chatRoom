@@ -30,7 +30,7 @@ const Room = ({ roomId }) => {
       <div>
         {/*Room name*/}
         <h1>{roomQuery.data.room.name}</h1>
-        <MessagesList roomId={roomId} newMessageCount={newMessageCount} roomQuery={roomQuery} subscribeToNewMessages={() => roomQuery.subscribeToMore({
+        <MessagesList roomId={roomId} roomQuery={roomQuery} subscribeToNewMessages={() => roomQuery.subscribeToMore({
           document: MESSAGES_SUBSCRIPTION,
           variables: { roomId },
           updateQuery: (prev, { subscriptionData }) => {

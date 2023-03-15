@@ -96,11 +96,21 @@ export const CREATE_USER = gql`
 `;
 
 export const CREATE_MESSAGE = gql`
-  mutation CreateMessage($userId: ID!, $roomId: ID!, $body: String, $timeCreated: Int) {
-    createMessage(userId: $userId, roomId: $roomId, body: $body, timeCreated: $timeCreated) {
+  mutation CreateMessage($authorId: ID!, $roomId: ID!, $body: String, $timeCreated: Int) {
+    createMessage(authorId: $authorId, roomId: $roomId, body: $body, timeCreated: $timeCreated) {
       code
       success
       message
+      newMessage {
+        body
+        time_created
+        author {
+          id
+          name
+          updated_at
+        }
+        id
+      }
     }
   }
 `;

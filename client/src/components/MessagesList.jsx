@@ -4,7 +4,7 @@ import { useLazyQuery } from '@apollo/client';
 // import { GET_MORE_MESSAGES } from '../client';
 import Message from './Message.jsx';
 
-const MessagesList = ({ roomId, roomQuery, subscribeToNewMessages, newMessageCount }) => {
+const MessagesList = ({ roomId, roomQuery, subscribeToNewMessages }) => {
   // State
   // const [messages, setMessages] = useState(roomQuery.data.room.messages);
   //const [messages, setMessages] = useState([]);
