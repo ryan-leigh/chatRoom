@@ -1,8 +1,8 @@
-const { SQLDataSource } = require('datasource-sql');
+const { BatchedSQLDataSource } = require('@nic-jennings/batched-sql-datasource');
 
 const MINUTE = 60;
 
-class MyDatabase extends SQLDataSource {
+class MyDatabase extends BatchedSQLDataSource {
   room(id) {
     console.log('in room')
     return this.knex
