@@ -60,7 +60,7 @@ const resolvers = {
             body: response.body,
             time_created: response.time_created,
             room_id: roomId,
-            authorId
+            user_id: authorId
           }
           pubSub.publish(`NEW_MESSAGE`, {newMessage});
           return {
@@ -101,13 +101,13 @@ const resolvers = {
   },
 
   Message: {
-    author: async ({ authorId }, _, { dataSources }) => {
+    author: async ({ user_id }, _, { dataSources }) => {
       console.log('we here')
-      console.log(authorId);
+      console.log(user_id);
       if (dataSources) {
         console.log(dataSources)
       }
-      const author = await dataSources.db.user(authorId)
+      const author = await dataSources.db.user(user_id)
         .then(userArr => userArr[0])
         .catch(err => console.log(err));
       console.log(author);

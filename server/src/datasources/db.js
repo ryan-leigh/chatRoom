@@ -5,13 +5,13 @@ const MINUTE = 60;
 class MyDatabase extends BatchedSQLDataSource {
   room(id) {
     console.log('in room')
-    return this.knex
+    return this.db.query
       .select('*')
       .from('rooms')
       .where({id: id});
   }
   messages(id, offset) {
-    return this.knex
+    return this.db.query
       .select('*')
       .from('messages')
       .where({room_id: id})
@@ -20,19 +20,19 @@ class MyDatabase extends BatchedSQLDataSource {
       .offset(offset);
   }
   user(id) {
-    return this.knex
+    return this.db.query
       .select('*')
       .from('users')
       .where({id: id});
   }
   userByUsername(username) {
-    return this.knex
+    return this.db.query
       .select('*')
       .from('users')
       .where({name: username});
   }
   createUser(username, updated_at) {
-    return this.knex
+    return this.db.query
       .insert({name: username, updated_at})
       .returning('*')
       .into('users')
@@ -40,9 +40,9 @@ class MyDatabase extends BatchedSQLDataSource {
         return sqlResponse[0];
       });
   }
-  createMessage(author_id, roomId, body, timeCreated) {
-    return this.knex
-      .insert({user_id: author_id, room_id: roomId, body, time_created: timeCreated})
+  createMessage(authorId, roomId, body, timeCreated) {
+    return this.db.query
+      .insert({user_id: authorId, room_id: roomId, body, time_created: timeCreated})
       .returning('*')
       .into('messages')
       .then((sqlResponse) => {
