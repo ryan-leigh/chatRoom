@@ -86,7 +86,7 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpac
   \*********************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (__WEBPACK_DEFAULT_EXPORT__)\n/* harmony export */ });\n/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ \"./node_modules/react/index.js\");\n/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);\n/* harmony import */ var _apollo_client__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @apollo/client */ \"./node_modules/@apollo/client/react/hooks/useReactiveVar.js\");\n/* harmony import */ var _apollo_client__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @apollo/client */ \"./node_modules/@apollo/client/react/hooks/useMutation.js\");\n/* harmony import */ var _client_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../client.js */ \"./src/client.js\");\n\nconst {\n  useState\n} = (react__WEBPACK_IMPORTED_MODULE_0___default());\n\n\nconst SubmitNewMessage = _ref => {\n  let {\n    roomId\n  } = _ref;\n  // State\n  (0,_apollo_client__WEBPACK_IMPORTED_MODULE_2__.useReactiveVar)(_client_js__WEBPACK_IMPORTED_MODULE_1__.currentUser);\n  console.log((0,_client_js__WEBPACK_IMPORTED_MODULE_1__.currentUser)());\n  const [newMessageText, setNewMessageText] = useState('');\n\n  // Queries & Mutations\n  const [createMessage, createMessageResult] = (0,_apollo_client__WEBPACK_IMPORTED_MODULE_3__.useMutation)(_client_js__WEBPACK_IMPORTED_MODULE_1__.CREATE_MESSAGE);\n\n  // Handlers\n  const handleMessageSubmit = () => {\n    createMessage({\n      variables: {\n        userId: (0,_client_js__WEBPACK_IMPORTED_MODULE_1__.currentUser)().id,\n        roomId: roomId,\n        body: newMessageText,\n        timeCreated: Math.floor(Date.now() / 1000)\n      }\n    });\n    setNewMessageText('');\n  };\n\n  // Elements\n  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(\"div\", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(\"input\", {\n    type: \"text\",\n    value: newMessageText,\n    onChange: e => {\n      setNewMessageText(e.target.value);\n    }\n  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(\"button\", {\n    onClick: handleMessageSubmit\n  }, \"Submit\"));\n};\n/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (SubmitNewMessage);\n\n//# sourceURL=webpack:///./src/components/SubmitNewMessage.jsx?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (__WEBPACK_DEFAULT_EXPORT__)\n/* harmony export */ });\n/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ \"./node_modules/react/index.js\");\n/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);\n/* harmony import */ var _apollo_client__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @apollo/client */ \"./node_modules/@apollo/client/react/hooks/useReactiveVar.js\");\n/* harmony import */ var _apollo_client__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @apollo/client */ \"./node_modules/@apollo/client/react/hooks/useMutation.js\");\n/* harmony import */ var _client_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../client.js */ \"./src/client.js\");\n\nconst {\n  useState\n} = (react__WEBPACK_IMPORTED_MODULE_0___default());\n\n\nconst SubmitNewMessage = _ref => {\n  let {\n    roomId\n  } = _ref;\n  // State\n  (0,_apollo_client__WEBPACK_IMPORTED_MODULE_2__.useReactiveVar)(_client_js__WEBPACK_IMPORTED_MODULE_1__.currentUser);\n  const [newMessageText, setNewMessageText] = useState('');\n\n  // Queries & Mutations\n  const [createMessage, createMessageResult] = (0,_apollo_client__WEBPACK_IMPORTED_MODULE_3__.useMutation)(_client_js__WEBPACK_IMPORTED_MODULE_1__.CREATE_MESSAGE);\n\n  // Handlers\n  const handleMessageSubmit = () => {\n    console.log('authorId: ', (0,_client_js__WEBPACK_IMPORTED_MODULE_1__.currentUser)().id);\n    console.log('roomId: ', roomId);\n    console.log('body: ', newMessageText);\n    createMessage({\n      variables: {\n        authorId: (0,_client_js__WEBPACK_IMPORTED_MODULE_1__.currentUser)().id,\n        roomId: roomId,\n        body: newMessageText,\n        timeCreated: Math.floor(Date.now() / 1000)\n      }\n    });\n    setNewMessageText('');\n  };\n\n  // Elements\n  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(\"div\", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(\"input\", {\n    type: \"text\",\n    value: newMessageText,\n    onChange: e => {\n      setNewMessageText(e.target.value);\n    }\n  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(\"button\", {\n    onClick: handleMessageSubmit\n  }, \"Submit\"));\n};\n/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (SubmitNewMessage);\n\n//# sourceURL=webpack:///./src/components/SubmitNewMessage.jsx?");
 
 /***/ }),
 
@@ -1264,7 +1264,7 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpac
 /************************************************************************/
 /******/ 	// The module cache
 /******/ 	var __webpack_module_cache__ = {};
-/******/ 	
+/******/
 /******/ 	// The require function
 /******/ 	function __webpack_require__(moduleId) {
 /******/ 		// Check if module is in cache
@@ -1278,17 +1278,17 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpac
 /******/ 			loaded: false,
 /******/ 			exports: {}
 /******/ 		};
-/******/ 	
+/******/
 /******/ 		// Execute the module function
 /******/ 		__webpack_modules__[moduleId](module, module.exports, __webpack_require__);
-/******/ 	
+/******/
 /******/ 		// Flag the module as loaded
 /******/ 		module.loaded = true;
-/******/ 	
+/******/
 /******/ 		// Return the exports of the module
 /******/ 		return module.exports;
 /******/ 	}
-/******/ 	
+/******/
 /************************************************************************/
 /******/ 	/* webpack/runtime/compat get default export */
 /******/ 	(() => {
@@ -1301,7 +1301,7 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpac
 /******/ 			return getter;
 /******/ 		};
 /******/ 	})();
-/******/ 	
+/******/
 /******/ 	/* webpack/runtime/create fake namespace object */
 /******/ 	(() => {
 /******/ 		var getProto = Object.getPrototypeOf ? (obj) => (Object.getPrototypeOf(obj)) : (obj) => (obj.__proto__);
@@ -1331,7 +1331,7 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpac
 /******/ 			return ns;
 /******/ 		};
 /******/ 	})();
-/******/ 	
+/******/
 /******/ 	/* webpack/runtime/define property getters */
 /******/ 	(() => {
 /******/ 		// define getter functions for harmony exports
@@ -1343,7 +1343,7 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpac
 /******/ 			}
 /******/ 		};
 /******/ 	})();
-/******/ 	
+/******/
 /******/ 	/* webpack/runtime/global */
 /******/ 	(() => {
 /******/ 		__webpack_require__.g = (function() {
@@ -1355,12 +1355,12 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpac
 /******/ 			}
 /******/ 		})();
 /******/ 	})();
-/******/ 	
+/******/
 /******/ 	/* webpack/runtime/hasOwnProperty shorthand */
 /******/ 	(() => {
 /******/ 		__webpack_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
 /******/ 	})();
-/******/ 	
+/******/
 /******/ 	/* webpack/runtime/make namespace object */
 /******/ 	(() => {
 /******/ 		// define __esModule on exports
@@ -1371,7 +1371,7 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpac
 /******/ 			Object.defineProperty(exports, '__esModule', { value: true });
 /******/ 		};
 /******/ 	})();
-/******/ 	
+/******/
 /******/ 	/* webpack/runtime/node module decorator */
 /******/ 	(() => {
 /******/ 		__webpack_require__.nmd = (module) => {
@@ -1380,13 +1380,13 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpac
 /******/ 			return module;
 /******/ 		};
 /******/ 	})();
-/******/ 	
+/******/
 /************************************************************************/
-/******/ 	
+/******/
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module can't be inlined because the eval devtool is used.
 /******/ 	var __webpack_exports__ = __webpack_require__("./src/index.js");
-/******/ 	
+/******/
 /******/ })()
 ;

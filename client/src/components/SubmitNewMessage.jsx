@@ -6,7 +6,6 @@ import { currentUser, CREATE_MESSAGE } from '../client.js';
 const SubmitNewMessage = ({ roomId }) => {
   // State
   useReactiveVar(currentUser);
-  console.log(currentUser());
   const [newMessageText, setNewMessageText] = useState('');
 
   // Queries & Mutations
@@ -14,9 +13,12 @@ const SubmitNewMessage = ({ roomId }) => {
 
   // Handlers
   const handleMessageSubmit = () => {
+    console.log('authorId: ', currentUser().id);
+    console.log('roomId: ', roomId);
+    console.log('body: ', newMessageText);
     createMessage({
       variables: {
-        userId: currentUser().id,
+        authorId: currentUser().id,
         roomId: roomId,
         body: newMessageText,
         timeCreated: Math.floor(Date.now()/1000)

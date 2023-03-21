@@ -101,6 +101,16 @@ export const CREATE_MESSAGE = gql`
       code
       success
       message
+      newMessage {
+        body
+        time_created
+        author {
+          id
+          name
+          updated_at
+        }
+        id
+      }
     }
   }
 `;
