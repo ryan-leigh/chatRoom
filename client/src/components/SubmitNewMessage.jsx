@@ -18,7 +18,7 @@ const SubmitNewMessage = ({ roomId }) => {
     console.log('body: ', newMessageText);
     createMessage({
       variables: {
-        authorId: currentUser().id,
+        userId: currentUser().id,
         roomId: roomId,
         body: newMessageText,
         timeCreated: Math.floor(Date.now()/1000)

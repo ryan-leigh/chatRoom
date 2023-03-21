@@ -46,7 +46,7 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpac
   \***********************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"CREATE_MESSAGE\": () => (/* binding */ CREATE_MESSAGE),\n/* harmony export */   \"CREATE_USER\": () => (/* binding */ CREATE_USER),\n/* harmony export */   \"GET_ROOM\": () => (/* binding */ GET_ROOM),\n/* harmony export */   \"MESSAGES_SUBSCRIPTION\": () => (/* binding */ MESSAGES_SUBSCRIPTION),\n/* harmony export */   \"client\": () => (/* binding */ client),\n/* harmony export */   \"currentPage\": () => (/* binding */ currentPage),\n/* harmony export */   \"currentUser\": () => (/* binding */ currentUser)\n/* harmony export */ });\n/* harmony import */ var _apollo_client__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @apollo/client */ \"./node_modules/@apollo/client/link/http/HttpLink.js\");\n/* harmony import */ var _apollo_client__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @apollo/client */ \"./node_modules/@apollo/client/link/core/split.js\");\n/* harmony import */ var _apollo_client__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @apollo/client */ \"./node_modules/@apollo/client/core/ApolloClient.js\");\n/* harmony import */ var _apollo_client__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @apollo/client */ \"./node_modules/@apollo/client/cache/inmemory/inMemoryCache.js\");\n/* harmony import */ var _apollo_client__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @apollo/client */ \"./node_modules/@apollo/client/cache/inmemory/reactiveVars.js\");\n/* harmony import */ var _apollo_client__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @apollo/client */ \"./node_modules/graphql-tag/lib/index.js\");\n/* harmony import */ var _apollo_client_utilities__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @apollo/client/utilities */ \"./node_modules/@apollo/client/utilities/graphql/getFromAST.js\");\n/* harmony import */ var _apollo_client_link_subscriptions__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @apollo/client/link/subscriptions */ \"./node_modules/@apollo/client/link/subscriptions/index.js\");\n/* harmony import */ var graphql_ws__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! graphql-ws */ \"./node_modules/graphql-ws/lib/client.mjs\");\n\n\n\n\n\n//Create links for WS and HTTP\nconst httpLink = new _apollo_client__WEBPACK_IMPORTED_MODULE_0__.HttpLink({\n  uri: 'http://localhost:3000/graphql'\n});\nconst wsLink = new _apollo_client_link_subscriptions__WEBPACK_IMPORTED_MODULE_1__.GraphQLWsLink((0,graphql_ws__WEBPACK_IMPORTED_MODULE_2__.createClient)({\n  url: 'ws://localhost:3000/graphql'\n}));\nconst splitLink = (0,_apollo_client__WEBPACK_IMPORTED_MODULE_3__.split)(_ref => {\n  let {\n    query\n  } = _ref;\n  const definition = (0,_apollo_client_utilities__WEBPACK_IMPORTED_MODULE_4__.getMainDefinition)(query);\n  return definition.kind === 'OperationDefinition' && definition.operation === 'subscription';\n}, wsLink, httpLink);\n\n// Client\nconst client = new _apollo_client__WEBPACK_IMPORTED_MODULE_5__.ApolloClient({\n  // uri: 'http://localhost:3000/graphql',\n  link: splitLink,\n  cache: new _apollo_client__WEBPACK_IMPORTED_MODULE_6__.InMemoryCache({\n    typePolicies: {\n      Query: {\n        fields: {\n          room: {\n            keyArgs: ['id']\n          }\n        }\n      }\n    }\n  })\n});\n\n// Variables\nconst currentUser = (0,_apollo_client__WEBPACK_IMPORTED_MODULE_7__.makeVar)(1);\nconst currentPage = (0,_apollo_client__WEBPACK_IMPORTED_MODULE_7__.makeVar)('login');\n\n// Queries\nconst GET_ROOM = _apollo_client__WEBPACK_IMPORTED_MODULE_8__.gql`\n  query GetRoom($id: ID!, $offset: Int!) {\n    room(id: $id, offset: $offset) {\n      id\n      name\n      messages {\n        id\n        body\n        time_created\n        author {\n          id\n          name\n          updated_at\n        }\n      }\n    }\n  }\n`;\n\n// export const GET_MORE_MESSAGES = gql`\n//   query GetMoreMessages($id: ID!, $offset: Int!) {\n//     messages(id: $id, offset: $offset) {\n//       id\n//       body\n//       time_created\n//       author {\n//         id\n//         name\n//         updated_at\n//       }\n//     }\n//   }\n// `\n\n// Mutations\nconst CREATE_USER = _apollo_client__WEBPACK_IMPORTED_MODULE_8__.gql`\n  mutation Mutation($username: String!, $updatedAt: Int!) {\n    createUser(username: $username, updated_at: $updatedAt) {\n      code\n      success\n      message\n      uniqueIssue\n      newUser {\n        id\n        name\n        updated_at\n      }\n    }\n  }\n`;\nconst CREATE_MESSAGE = _apollo_client__WEBPACK_IMPORTED_MODULE_8__.gql`\n  mutation CreateMessage($userId: ID!, $roomId: ID!, $body: String, $timeCreated: Int) {\n    createMessage(authorId: $userId, roomId: $roomId, body: $body, timeCreated: $timeCreated) {\n      code\n      success\n      message\n    }\n  }\n`;\n\n// Subscriptions\nconst MESSAGES_SUBSCRIPTION = _apollo_client__WEBPACK_IMPORTED_MODULE_8__.gql`\n  subscription OnMessageCreated($roomId: ID!) {\n    newMessage (roomId: $roomId) {\n      id\n      body\n      time_created\n      author {\n        id\n        name\n        updated_at\n      }\n    }\n  }\n`;\n\n//# sourceURL=webpack:///./src/client.js?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"CREATE_MESSAGE\": () => (/* binding */ CREATE_MESSAGE),\n/* harmony export */   \"CREATE_USER\": () => (/* binding */ CREATE_USER),\n/* harmony export */   \"GET_ROOM\": () => (/* binding */ GET_ROOM),\n/* harmony export */   \"MESSAGES_SUBSCRIPTION\": () => (/* binding */ MESSAGES_SUBSCRIPTION),\n/* harmony export */   \"client\": () => (/* binding */ client),\n/* harmony export */   \"currentPage\": () => (/* binding */ currentPage),\n/* harmony export */   \"currentUser\": () => (/* binding */ currentUser)\n/* harmony export */ });\n/* harmony import */ var _apollo_client__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @apollo/client */ \"./node_modules/@apollo/client/link/http/HttpLink.js\");\n/* harmony import */ var _apollo_client__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @apollo/client */ \"./node_modules/@apollo/client/link/core/split.js\");\n/* harmony import */ var _apollo_client__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @apollo/client */ \"./node_modules/@apollo/client/core/ApolloClient.js\");\n/* harmony import */ var _apollo_client__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @apollo/client */ \"./node_modules/@apollo/client/cache/inmemory/inMemoryCache.js\");\n/* harmony import */ var _apollo_client__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @apollo/client */ \"./node_modules/@apollo/client/cache/inmemory/reactiveVars.js\");\n/* harmony import */ var _apollo_client__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @apollo/client */ \"./node_modules/graphql-tag/lib/index.js\");\n/* harmony import */ var _apollo_client_utilities__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @apollo/client/utilities */ \"./node_modules/@apollo/client/utilities/graphql/getFromAST.js\");\n/* harmony import */ var _apollo_client_link_subscriptions__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @apollo/client/link/subscriptions */ \"./node_modules/@apollo/client/link/subscriptions/index.js\");\n/* harmony import */ var graphql_ws__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! graphql-ws */ \"./node_modules/graphql-ws/lib/client.mjs\");\n\n\n\n\n\n//Create links for WS and HTTP\nconst httpLink = new _apollo_client__WEBPACK_IMPORTED_MODULE_0__.HttpLink({\n  uri: 'http://localhost:3000/graphql'\n});\nconst wsLink = new _apollo_client_link_subscriptions__WEBPACK_IMPORTED_MODULE_1__.GraphQLWsLink((0,graphql_ws__WEBPACK_IMPORTED_MODULE_2__.createClient)({\n  url: 'ws://localhost:3000/graphql'\n}));\nconst splitLink = (0,_apollo_client__WEBPACK_IMPORTED_MODULE_3__.split)(_ref => {\n  let {\n    query\n  } = _ref;\n  const definition = (0,_apollo_client_utilities__WEBPACK_IMPORTED_MODULE_4__.getMainDefinition)(query);\n  return definition.kind === 'OperationDefinition' && definition.operation === 'subscription';\n}, wsLink, httpLink);\n\n// Client\nconst client = new _apollo_client__WEBPACK_IMPORTED_MODULE_5__.ApolloClient({\n  // uri: 'http://localhost:3000/graphql',\n  link: splitLink,\n  cache: new _apollo_client__WEBPACK_IMPORTED_MODULE_6__.InMemoryCache({\n    typePolicies: {\n      Query: {\n        fields: {\n          room: {\n            keyArgs: ['id']\n          }\n        }\n      }\n    }\n  })\n});\n\n// Variables\nconst currentUser = (0,_apollo_client__WEBPACK_IMPORTED_MODULE_7__.makeVar)(1);\nconst currentPage = (0,_apollo_client__WEBPACK_IMPORTED_MODULE_7__.makeVar)('login');\n\n// Queries\nconst GET_ROOM = _apollo_client__WEBPACK_IMPORTED_MODULE_8__.gql`\n  query GetRoom($id: ID!, $offset: Int!) {\n    room(id: $id, offset: $offset) {\n      id\n      name\n      messages {\n        id\n        body\n        time_created\n        author {\n          id\n          name\n          updated_at\n        }\n      }\n    }\n  }\n`;\n\n// export const GET_MORE_MESSAGES = gql`\n//   query GetMoreMessages($id: ID!, $offset: Int!) {\n//     messages(id: $id, offset: $offset) {\n//       id\n//       body\n//       time_created\n//       author {\n//         id\n//         name\n//         updated_at\n//       }\n//     }\n//   }\n// `\n\n// Mutations\nconst CREATE_USER = _apollo_client__WEBPACK_IMPORTED_MODULE_8__.gql`\n  mutation Mutation($username: String!, $updatedAt: Int!) {\n    createUser(username: $username, updated_at: $updatedAt) {\n      code\n      success\n      message\n      uniqueIssue\n      newUser {\n        id\n        name\n        updated_at\n      }\n    }\n  }\n`;\nconst CREATE_MESSAGE = _apollo_client__WEBPACK_IMPORTED_MODULE_8__.gql`\n  mutation CreateMessage($userId: ID!, $roomId: ID!, $body: String, $timeCreated: Int) {\n    createMessage(authorId: $userId, roomId: $roomId, body: $body, timeCreated: $timeCreated) {\n      code\n      success\n      message\n      newMessage {\n        body\n        time_created\n        author {\n          id\n          name\n          updated_at\n        }\n        id\n      }\n    }\n  }\n`;\n\n// Subscriptions\nconst MESSAGES_SUBSCRIPTION = _apollo_client__WEBPACK_IMPORTED_MODULE_8__.gql`\n  subscription OnMessageCreated($roomId: ID!) {\n    newMessage (roomId: $roomId) {\n      id\n      body\n      time_created\n      author {\n        id\n        name\n        updated_at\n      }\n    }\n  }\n`;\n\n//# sourceURL=webpack:///./src/client.js?");
 
 /***/ }),
 
@@ -86,7 +86,7 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpac
   \*********************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (__WEBPACK_DEFAULT_EXPORT__)\n/* harmony export */ });\n/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ \"./node_modules/react/index.js\");\n/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);\n/* harmony import */ var _apollo_client__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @apollo/client */ \"./node_modules/@apollo/client/react/hooks/useReactiveVar.js\");\n/* harmony import */ var _apollo_client__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @apollo/client */ \"./node_modules/@apollo/client/react/hooks/useMutation.js\");\n/* harmony import */ var _client_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../client.js */ \"./src/client.js\");\n\nconst {\n  useState\n} = (react__WEBPACK_IMPORTED_MODULE_0___default());\n\n\nconst SubmitNewMessage = _ref => {\n  let {\n    roomId\n  } = _ref;\n  // State\n  (0,_apollo_client__WEBPACK_IMPORTED_MODULE_2__.useReactiveVar)(_client_js__WEBPACK_IMPORTED_MODULE_1__.currentUser);\n  const [newMessageText, setNewMessageText] = useState('');\n\n  // Queries & Mutations\n  const [createMessage, createMessageResult] = (0,_apollo_client__WEBPACK_IMPORTED_MODULE_3__.useMutation)(_client_js__WEBPACK_IMPORTED_MODULE_1__.CREATE_MESSAGE);\n\n  // Handlers\n  const handleMessageSubmit = () => {\n    console.log('authorId: ', (0,_client_js__WEBPACK_IMPORTED_MODULE_1__.currentUser)().id);\n    console.log('roomId: ', roomId);\n    console.log('body: ', newMessageText);\n    createMessage({\n      variables: {\n        authorId: (0,_client_js__WEBPACK_IMPORTED_MODULE_1__.currentUser)().id,\n        roomId: roomId,\n        body: newMessageText,\n        timeCreated: Math.floor(Date.now() / 1000)\n      }\n    });\n    setNewMessageText('');\n  };\n\n  // Elements\n  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(\"div\", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(\"input\", {\n    type: \"text\",\n    value: newMessageText,\n    onChange: e => {\n      setNewMessageText(e.target.value);\n    }\n  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(\"button\", {\n    onClick: handleMessageSubmit\n  }, \"Submit\"));\n};\n/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (SubmitNewMessage);\n\n//# sourceURL=webpack:///./src/components/SubmitNewMessage.jsx?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (__WEBPACK_DEFAULT_EXPORT__)\n/* harmony export */ });\n/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ \"./node_modules/react/index.js\");\n/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);\n/* harmony import */ var _apollo_client__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @apollo/client */ \"./node_modules/@apollo/client/react/hooks/useReactiveVar.js\");\n/* harmony import */ var _apollo_client__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @apollo/client */ \"./node_modules/@apollo/client/react/hooks/useMutation.js\");\n/* harmony import */ var _client_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../client.js */ \"./src/client.js\");\n\nconst {\n  useState\n} = (react__WEBPACK_IMPORTED_MODULE_0___default());\n\n\nconst SubmitNewMessage = _ref => {\n  let {\n    roomId\n  } = _ref;\n  // State\n  (0,_apollo_client__WEBPACK_IMPORTED_MODULE_2__.useReactiveVar)(_client_js__WEBPACK_IMPORTED_MODULE_1__.currentUser);\n  const [newMessageText, setNewMessageText] = useState('');\n\n  // Queries & Mutations\n  const [createMessage, createMessageResult] = (0,_apollo_client__WEBPACK_IMPORTED_MODULE_3__.useMutation)(_client_js__WEBPACK_IMPORTED_MODULE_1__.CREATE_MESSAGE);\n\n  // Handlers\n  const handleMessageSubmit = () => {\n    console.log('authorId: ', (0,_client_js__WEBPACK_IMPORTED_MODULE_1__.currentUser)().id);\n    console.log('roomId: ', roomId);\n    console.log('body: ', newMessageText);\n    createMessage({\n      variables: {\n        userId: (0,_client_js__WEBPACK_IMPORTED_MODULE_1__.currentUser)().id,\n        roomId: roomId,\n        body: newMessageText,\n        timeCreated: Math.floor(Date.now() / 1000)\n      }\n    });\n    setNewMessageText('');\n  };\n\n  // Elements\n  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(\"div\", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(\"input\", {\n    type: \"text\",\n    value: newMessageText,\n    onChange: e => {\n      setNewMessageText(e.target.value);\n    }\n  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(\"button\", {\n    onClick: handleMessageSubmit\n  }, \"Submit\"));\n};\n/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (SubmitNewMessage);\n\n//# sourceURL=webpack:///./src/components/SubmitNewMessage.jsx?");
 
 /***/ }),
 
@@ -1264,7 +1264,7 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpac
 /************************************************************************/
 /******/ 	// The module cache
 /******/ 	var __webpack_module_cache__ = {};
-/******/
+/******/ 	
 /******/ 	// The require function
 /******/ 	function __webpack_require__(moduleId) {
 /******/ 		// Check if module is in cache
@@ -1278,17 +1278,17 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpac
 /******/ 			loaded: false,
 /******/ 			exports: {}
 /******/ 		};
-/******/
+/******/ 	
 /******/ 		// Execute the module function
 /******/ 		__webpack_modules__[moduleId](module, module.exports, __webpack_require__);
-/******/
+/******/ 	
 /******/ 		// Flag the module as loaded
 /******/ 		module.loaded = true;
-/******/
+/******/ 	
 /******/ 		// Return the exports of the module
 /******/ 		return module.exports;
 /******/ 	}
-/******/
+/******/ 	
 /************************************************************************/
 /******/ 	/* webpack/runtime/compat get default export */
 /******/ 	(() => {
@@ -1301,7 +1301,7 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpac
 /******/ 			return getter;
 /******/ 		};
 /******/ 	})();
-/******/
+/******/ 	
 /******/ 	/* webpack/runtime/create fake namespace object */
 /******/ 	(() => {
 /******/ 		var getProto = Object.getPrototypeOf ? (obj) => (Object.getPrototypeOf(obj)) : (obj) => (obj.__proto__);
@@ -1331,7 +1331,7 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpac
 /******/ 			return ns;
 /******/ 		};
 /******/ 	})();
-/******/
+/******/ 	
 /******/ 	/* webpack/runtime/define property getters */
 /******/ 	(() => {
 /******/ 		// define getter functions for harmony exports
@@ -1343,7 +1343,7 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpac
 /******/ 			}
 /******/ 		};
 /******/ 	})();
-/******/
+/******/ 	
 /******/ 	/* webpack/runtime/global */
 /******/ 	(() => {
 /******/ 		__webpack_require__.g = (function() {
@@ -1355,12 +1355,12 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpac
 /******/ 			}
 /******/ 		})();
 /******/ 	})();
-/******/
+/******/ 	
 /******/ 	/* webpack/runtime/hasOwnProperty shorthand */
 /******/ 	(() => {
 /******/ 		__webpack_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
 /******/ 	})();
-/******/
+/******/ 	
 /******/ 	/* webpack/runtime/make namespace object */
 /******/ 	(() => {
 /******/ 		// define __esModule on exports
@@ -1371,7 +1371,7 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpac
 /******/ 			Object.defineProperty(exports, '__esModule', { value: true });
 /******/ 		};
 /******/ 	})();
-/******/
+/******/ 	
 /******/ 	/* webpack/runtime/node module decorator */
 /******/ 	(() => {
 /******/ 		__webpack_require__.nmd = (module) => {
@@ -1380,13 +1380,13 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpac
 /******/ 			return module;
 /******/ 		};
 /******/ 	})();
-/******/
+/******/ 	
 /************************************************************************/
-/******/
+/******/ 	
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module can't be inlined because the eval devtool is used.
 /******/ 	var __webpack_exports__ = __webpack_require__("./src/index.js");
-/******/
+/******/ 	
 /******/ })()
 ;
