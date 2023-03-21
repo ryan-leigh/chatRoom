@@ -15,9 +15,9 @@ class MyDatabase extends BatchedSQLDataSource {
       .select('*')
       .from('messages')
       .where({room_id: id})
-      .orderBy('id', 'desc')
+      .orderBy('time_created', 'desc')
       .limit(20)
-      .offset(offset);
+      .offset(offset * 20);
   }
   user(id) {
     return this.db.query

@@ -4,12 +4,11 @@ import { useLazyQuery } from '@apollo/client';
 // import { GET_MORE_MESSAGES } from '../client';
 import Message from './Message.jsx';
 
-const MessagesList = ({ roomId, roomQuery, subscribeToNewMessages, newMessageCount }) => {
+const MessagesList = ({ roomId, roomQuery, subscribeToNewMessages }) => {
   // State
   // const [messages, setMessages] = useState(roomQuery.data.room.messages);
   //const [messages, setMessages] = useState([]);
   //console.log(roomQuery.data.room.messages)
-  //const [numberOfFetches, setNumberOfFetches] = useState(1);
 
   // Queries & Mutations
   //const [loadMoreMessages, getMoreMessagesResult] = useLazyQuery(GET_MORE_MESSAGES);
@@ -42,15 +41,10 @@ const MessagesList = ({ roomId, roomQuery, subscribeToNewMessages, newMessageCou
   return (
     <div>
       <div>
-        {roomQuery.data.room.messages.map((message) => (
+        {roomQuery.data.room.messages.slice().sort((a, b) => a.time_created - b.time_created).map((message) => (
           <Message message={message} key={message.id}/>
         ))}
       </div>
-      {/* <button onClick={() => loadMoreMessages({variables: {
-          id: roomId,
-          offset: (numberOfFetches * 20) + newMessageCount
-        }}
-      )}>Get more messages</button> */}
     </div>
   )
 };

@@ -3,20 +3,15 @@ const pubSub = new PubSub();
 
 const resolvers = {
   Query: {
-    room: (_, { id }, { dataSources }) => {
-      console.log('room request!')
-      console.log(id);
+    room: (_, { id, offset }, { dataSources }) => {
       return dataSources.db.room(id)
         .then(result => {
           console.log(result[0]);
+          result[0].offset = offset;
           return result[0];
         })
         .catch(err => console.log(err));
     },
-    // messages: (_, { id, offset }, { dataSources }) => {
-    //   console.log('request!')
-    //   return dataSources.db.messages(id, offset, 0);
-    // }
   },
 
   Mutation: {
@@ -95,8 +90,8 @@ const resolvers = {
   },
 
   Room: {
-    messages: async ({ id, offset, addLimit }, _, { dataSources }) => {
-      return await dataSources.db.messages(id, offset, addLimit);
+    messages: async ({ id, offset }, _, { dataSources }) => {
+      return await dataSources.db.messages(id, offset);
     }
   },
 

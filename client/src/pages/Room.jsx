@@ -10,13 +10,10 @@ const Room = ({ roomId }) => {
   // State
   useReactiveVar(currentPage);
   useReactiveVar(currentUser);
-  //const [newMessageCount, setNewMessageCount] = useState(0);
+  const [numberOfFetches, setNumberOfFetches] = useState(1);
 
   // Queries & Mutations
-  const roomQuery = useQuery(GET_ROOM, {variables: { id: roomId }});
-  const messagesSubscription = useSubscription(MESSAGES_SUBSCRIPTION, {variables: { id: roomId }});
-
-  //console.log(newMessageCount);
+  const roomQuery = useQuery(GET_ROOM, {variables: { id: roomId, offset: 0 }});
 
   // Elements
   if (roomQuery.loading) {
@@ -28,13 +25,11 @@ const Room = ({ roomId }) => {
   } else {
     return (
       <div>
-        {/*Room name*/}
         <h1>{roomQuery.data.room.name}</h1>
-        <MessagesList roomId={roomId} newMessageCount={newMessageCount} roomQuery={roomQuery} subscribeToNewMessages={() => roomQuery.subscribeToMore({
+        <MessagesList roomId={roomId} roomQuery={roomQuery} subscribeToNewMessages={() => roomQuery.subscribeToMore({
           document: MESSAGES_SUBSCRIPTION,
           variables: { roomId },
           updateQuery: (prev, { subscriptionData }) => {
-            //setNewMessageCount(newMessageCount + 1);
             console.log(subscriptionData);
             if (!subscriptionData.data) return prev;
             const newMessage = {
@@ -44,6 +39,7 @@ const Room = ({ roomId }) => {
               author: {
                 id: subscriptionData.data.newMessage.author_id,
                 name: subscriptionData.data.newMessage.author_name,
+                updated_at: subscriptionData.data.newMessage.updated_at
               }
             }
             return Object.assign({}, prev, {
@@ -57,6 +53,15 @@ const Room = ({ roomId }) => {
             console.log(err);
           }
         })}/>
+        <button onClick={() => {
+          roomQuery.fetchMore({
+            variables: {
+              roomId,
+              offset: numberOfFetches
+            }
+          });
+          setNumberOfFetches(numberOfFetches + 1);
+        }}>Get more messages</button>
         <SubmitNewMessage roomId={roomId} />
       </div>
     )
