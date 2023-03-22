@@ -12,11 +12,13 @@ const Room = ({ roomId }) => {
   useReactiveVar(currentUser);
   const [numberOfFetches, setNumberOfFetches] = useState(1);
 
+
   // Queries & Mutations
-  const roomQuery = useQuery(GET_ROOM, {variables: { id: roomId, offset: 0 }});
+  const roomQuery = useQuery(GET_ROOM, {fetchPolicy: 'network-only', variables: { id: roomId, offset: 0 }});
 
   // Elements
   if (roomQuery.loading) {
+    console.log('loading...')
     return (
       <div>loading...</div>
     )
@@ -37,13 +39,15 @@ const Room = ({ roomId }) => {
               body: subscriptionData.data.newMessage.body,
               time_created: subscriptionData.data.newMessage.time_created,
               author: {
-                id: subscriptionData.data.newMessage.author_id,
-                name: subscriptionData.data.newMessage.author_name,
-                updated_at: subscriptionData.data.newMessage.updated_at
+                id: subscriptionData.data.newMessage.author.id,
+                name: subscriptionData.data.newMessage.author.name,
+                updated_at: subscriptionData.data.newMessage.author.updated_at
               }
             }
             return Object.assign({}, prev, {
               room: {
+                id: prev.room.id,
+                name: prev.room.name,
                 messages: [...prev.room.messages, newMessage]
               }
             })

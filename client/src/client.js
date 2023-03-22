@@ -27,11 +27,33 @@ export const client = new ApolloClient({
   // uri: 'http://localhost:3000/graphql',
   link: splitLink,
   cache: new InMemoryCache({
+    //addTypename: true,
     typePolicies: {
-      Query: {
+      // Query: {
+      //   GetRoom: {
+      //     fields: {
+      //       room: {
+      //         keyArgs: ['id'],
+      //         merge(existing, incoming) {
+      //           if (existing === undefined) {
+      //             return incoming;
+      //           }
+      //           return Object.assign({}, incoming, {
+      //             messages: [...existing.messages, ...incoming.messages]
+      //           });
+      //         }
+      //       }
+      //     }
+      //   }
+      // },
+      Room: {
         fields: {
-          room: {
-            keyArgs: ['id']
+          messages: {
+            merge(existing = [], incoming) {
+              console.log('existing: ', existing);
+              console.log('incoming: ', incoming);
+              return [...existing, ...incoming];
+            }
           }
         }
       }

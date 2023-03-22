@@ -4,14 +4,18 @@ const pubSub = new PubSub();
 const resolvers = {
   Query: {
     room: (_, { id, offset }, { dataSources }) => {
+      console.log('Room request received');
       return dataSources.db.room(id)
         .then(result => {
-          console.log(result[0]);
           result[0].offset = offset;
           return result[0];
         })
         .catch(err => console.log(err));
     },
+    getMessages: (_, { id, offset }, { dataSources }) => {
+      return dataSources.db.messages(id, offset)
+        .catch(err => console.log(err));
+    }
   },
 
   Mutation: {
@@ -81,6 +85,7 @@ const resolvers = {
       subscribe: withFilter(
         () => pubSub.asyncIterator([`NEW_MESSAGE`]),
         (payload, variables) => {
+          console.log(payload);
           return (
             payload.newMessage.room_id === variables.roomId
           )
@@ -91,21 +96,17 @@ const resolvers = {
 
   Room: {
     messages: async ({ id, offset }, _, { dataSources }) => {
-      return await dataSources.db.messages(id, offset);
+      const messages = await dataSources.db.messages(id, offset);
+      console.log('Messages: ', messages);
+      return messages;
     }
   },
 
   Message: {
     author: async ({ user_id }, _, { dataSources }) => {
-      console.log('we here')
-      console.log(user_id);
-      if (dataSources) {
-        console.log(dataSources)
-      }
       const author = await dataSources.db.user(user_id)
         .then(userArr => userArr[0])
         .catch(err => console.log(err));
-      console.log(author);
       return author;
     }
   }

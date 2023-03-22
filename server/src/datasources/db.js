@@ -4,13 +4,13 @@ const MINUTE = 60;
 
 class MyDatabase extends BatchedSQLDataSource {
   room(id) {
-    console.log('in room')
     return this.db.query
       .select('*')
       .from('rooms')
       .where({id: id});
   }
   messages(id, offset) {
+    console.log('hitting messages');
     return this.db.query
       .select('*')
       .from('messages')

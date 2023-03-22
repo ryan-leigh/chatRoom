@@ -6,6 +6,7 @@ const typeDefs = gql`
     user(id: ID!): User!
     "messages(id: ID!, offset: Int!): [Message!]!"
     room(id: ID!, offset: Int!): Room!
+    getMessages(id: ID!, offset: Int!): [Message!]
   }
 
   type Mutation {
