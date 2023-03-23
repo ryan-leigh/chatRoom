@@ -4,20 +4,21 @@ const MINUTE = 60;
 
 class MyDatabase extends BatchedSQLDataSource {
   room(id) {
-    console.log('in room')
     return this.db.query
       .select('*')
       .from('rooms')
       .where({id: id});
   }
   messages(id, offset) {
+    console.log('hitting messages');
+    console.log(offset);
     return this.db.query
       .select('*')
       .from('messages')
       .where({room_id: id})
       .orderBy('time_created', 'desc')
       .limit(20)
-      .offset(offset * 20);
+      .offset(offset);
   }
   user(id) {
     return this.db.query
