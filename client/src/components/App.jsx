@@ -1,13 +1,12 @@
 import React from 'react';
 import { useReactiveVar } from '@apollo/client';
-import { currentUser, currentPage } from '../client';
+import { currentPage } from '../client';
 import Login from '../pages/Login.jsx';
 import Room from '../pages/Room.jsx'
 
 const App = () => {
+  // State
   useReactiveVar(currentPage);
-  useReactiveVar(currentUser);
-  console.log('App')
 
   // Pages: 'login', 'room'
   switch (currentPage()) {

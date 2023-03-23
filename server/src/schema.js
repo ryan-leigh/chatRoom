@@ -2,9 +2,7 @@ const { gql } = require('apollo-server-express');
 
 const typeDefs = gql`
   type Query {
-    "Get message objects for all messages sent by a specific user"
     user(id: ID!): User!
-    "messages(id: ID!, offset: Int!): [Message!]!"
     room(id: ID!, offset: Int): Room!
     getMessages(id: ID!, offset: Int): [Message!]
   }
@@ -15,7 +13,6 @@ const typeDefs = gql`
   }
 
   type Subscription {
-    "Get message objects from a specific room"
     newMessage(roomId: ID!): Message!
   }
 
@@ -36,19 +33,8 @@ const typeDefs = gql`
     id: ID!
     body: String
     time_created: Int!
-    # author_id: ID!
-    # author_name: String!
     author: User
   }
-
-  # type NewMessage {
-  #   id: ID!
-  #   body: String
-  #   time_created: Int!
-  #   author_id: ID!
-  #   author_name: String!
-  #   author_updated_at: Int
-  # }
 
   "MUTATION RESPONSES"
   type CreateUserResponse {

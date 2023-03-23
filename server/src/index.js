@@ -30,7 +30,6 @@ const knexConfig = {
     password: process.env.PGPASSWORD
   }
 }
-//const db = new MyDatabase(knexConfig);
 
 // Create servers
 const port = process.env.PORT;
@@ -48,7 +47,6 @@ const server = new ApolloServer({
   plugins: [
     // Proper shutdown for the HTTP server.
     ApolloServerPluginDrainHttpServer({ httpServer }),
-
     // Proper shutdown for the WebSocket server.
     {
       async serverWillStart() {
@@ -75,7 +73,6 @@ const start = async () => {
           }
         }
       }));
-      //server.applyMiddleware({ app })
       app.use(express.static(path.join(__dirname, '../../client/dist')));
     })
     .then(() => {

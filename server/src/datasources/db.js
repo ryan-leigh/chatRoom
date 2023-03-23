@@ -10,8 +10,6 @@ class MyDatabase extends BatchedSQLDataSource {
       .where({id: id});
   }
   messages(id, offset) {
-    console.log('hitting messages');
-    console.log(offset);
     return this.db.query
       .select('*')
       .from('messages')

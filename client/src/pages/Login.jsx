@@ -4,7 +4,6 @@ import { useReactiveVar, useMutation } from '@apollo/client';
 import { currentPage, currentUser, CREATE_USER } from '../client.js';
 
 const Login = () => {
-  console.log('login page')
   // State
   useReactiveVar(currentPage);
   const [username, setUsername] = useState('');

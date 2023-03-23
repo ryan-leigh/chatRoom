@@ -24,46 +24,15 @@ const splitLink = split(
 
 // Client
 export const client = new ApolloClient({
-  // uri: 'http://localhost:3000/graphql',
   link: splitLink,
   cache: new InMemoryCache({
-    //addTypename: true,
+    // addTypename: true,
     typePolicies: {
-      // Query: {
-      //   GetRoom: {
-      //     fields: {
-      //       room: {
-      //         keyArgs: ['id'],
-      //         merge(existing, incoming) {
-      //           if (existing === undefined) {
-      //             return incoming;
-      //           }
-      //           return Object.assign({}, incoming, {
-      //             messages: [...existing.messages, ...incoming.messages]
-      //           });
-      //         }
-      //       }
-      //     }
-      //   }
-      // },
-      // Room: {
-      //   fields: {
-      //     messages: {
-      //       merge(existing = [], incoming) {
-      //         console.log('existing: ', existing);
-      //         console.log('incoming: ', incoming);
-      //         return [...existing, ...incoming];
-      //       }
-      //     }
-      //   }
-      // }
       Query: {
         fields: {
           getMessages: {
             keyArgs: ['id'],
             merge(existing, incoming) {
-              console.log('incoming: ')
-              console.log(incoming);
               if (existing === undefined) {
                 return incoming;
               }
@@ -86,16 +55,6 @@ export const GET_ROOM = gql`
     room(id: $id, offset: $offset) {
       id
       name
-      # messages {
-      #   id
-      #   body
-      #   time_created
-      #   author {
-      #     id
-      #     name
-      #     updated_at
-      #   }
-      # }
     }
   }
 `;
@@ -122,21 +81,6 @@ export const GET_MESSAGES = gql`
     }
   }
 `
-
-// export const GET_MORE_MESSAGES = gql`
-//   query GetMoreMessages($id: ID!, $offset: Int!) {
-//     messages(id: $id, offset: $offset) {
-//       id
-//       body
-//       time_created
-//       author {
-//         id
-//         name
-//         updated_at
-//       }
-//     }
-//   }
-// `
 
 // Mutations
 export const CREATE_USER = gql`

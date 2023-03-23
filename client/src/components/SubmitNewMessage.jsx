@@ -13,9 +13,6 @@ const SubmitNewMessage = ({ roomId }) => {
 
   // Handlers
   const handleMessageSubmit = () => {
-    console.log('authorId: ', currentUser().id);
-    console.log('roomId: ', roomId);
-    console.log('body: ', newMessageText);
     createMessage({
       variables: {
         userId: currentUser().id,

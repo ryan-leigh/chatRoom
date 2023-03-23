@@ -4,7 +4,6 @@ const pubSub = new PubSub();
 const resolvers = {
   Query: {
     room: (_, { id, offset }, { dataSources }) => {
-      console.log('Room request received');
       return dataSources.db.room(id)
         .then(result => {
           result[0].offset = offset;
@@ -96,9 +95,8 @@ const resolvers = {
 
   Room: {
     messages: async ({ id, offset }, _, { dataSources }) => {
-      const messages = await dataSources.db.messages(id, offset);
-      console.log('Messages: ', messages);
-      return messages;
+      return dataSources.db.messages(id, offset)
+        .catch(err => console.log(err));
     }
   },
 

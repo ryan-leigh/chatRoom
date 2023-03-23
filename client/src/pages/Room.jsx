@@ -1,16 +1,13 @@
 import React from 'react';
 const { useState } = React;
 import { useQuery, useSubscription, useReactiveVar } from '@apollo/client';
-import { client, currentPage, currentUser, GET_ROOM, GET_MESSAGES, MESSAGES_SUBSCRIPTION, READ_MESSAGES } from '../client';
+import { client, currentPage, GET_ROOM, GET_MESSAGES, MESSAGES_SUBSCRIPTION, READ_MESSAGES } from '../client';
 import MessagesList from '../components/MessagesList.jsx';
 import SubmitNewMessage from '../components/SubmitNewMessage.jsx';
 
 const Room = ({ roomId }) => {
-  console.log('room page')
-
   // State
   useReactiveVar(currentPage);
-  useReactiveVar(currentUser);
 
   // Queries & Mutations
   const roomQuery = useQuery(GET_ROOM, {variables: { id: roomId, offset: 0}});
@@ -18,15 +15,12 @@ const Room = ({ roomId }) => {
 
   // Elements
   if (roomQuery.loading || messagesQuery.loading) {
-    console.log('loading...')
     return (
       <div>loading...</div>
     )
   } else if (roomQuery.error || messagesQuery.error) {
     <div>We had trouble accessing the room</div>
   } else {
-    // console.log(messagesQuery);
-    // console.log(messagesQuery.data.getMessages)
     return (
       <div>
         <h1>{roomQuery.data.room.name}</h1>
@@ -34,8 +28,6 @@ const Room = ({ roomId }) => {
           document: MESSAGES_SUBSCRIPTION,
           variables: { roomId },
           updateQuery: (prev, { subscriptionData }) => {
-            console.log(prev);
-            console.log(subscriptionData);
             if (!subscriptionData.data) return prev;
             // *** Try replacing this with just subscriptionData.data.newMessage ***
             const newMessage = {
@@ -51,7 +43,6 @@ const Room = ({ roomId }) => {
             const returnObj = Object.assign({}, prev, {
               getMessages: [newMessage]
             })
-            console.log(JSON.stringify(returnObj));
             return returnObj;
           },
           onError: (err) => {
@@ -66,7 +57,6 @@ const Room = ({ roomId }) => {
               id: roomId
             }
           })?.getMessages?.length || 0;
-          console.log(messagesLength)
           messagesQuery.fetchMore({
             variables: {
               roomId,
