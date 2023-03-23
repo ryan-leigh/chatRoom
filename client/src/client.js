@@ -46,12 +46,27 @@ export const client = new ApolloClient({
       //     }
       //   }
       // },
-      Room: {
+      // Room: {
+      //   fields: {
+      //     messages: {
+      //       merge(existing = [], incoming) {
+      //         console.log('existing: ', existing);
+      //         console.log('incoming: ', incoming);
+      //         return [...existing, ...incoming];
+      //       }
+      //     }
+      //   }
+      // }
+      Query: {
         fields: {
-          messages: {
-            merge(existing = [], incoming) {
-              console.log('existing: ', existing);
-              console.log('incoming: ', incoming);
+          getMessages: {
+            keyArgs: ['id'],
+            merge(existing, incoming) {
+              console.log('incoming: ')
+              console.log(incoming);
+              if (existing === undefined) {
+                return incoming;
+              }
               return [...existing, ...incoming];
             }
           }
@@ -71,19 +86,42 @@ export const GET_ROOM = gql`
     room(id: $id, offset: $offset) {
       id
       name
-      messages {
-        id
-        body
-        time_created
-        author {
-          id
-          name
-          updated_at
-        }
-      }
+      # messages {
+      #   id
+      #   body
+      #   time_created
+      #   author {
+      #     id
+      #     name
+      #     updated_at
+      #   }
+      # }
     }
   }
 `;
+
+export const READ_MESSAGES = gql`
+  query ReadMessages($id: ID!) {
+    getMessages(id: $id) {
+      id
+    }
+  }
+`
+
+export const GET_MESSAGES = gql`
+  query GetMessages($id: ID!, $offset: Int!) {
+    getMessages(id: $id, offset: $offset) {
+      id
+      body
+      time_created
+      author {
+        id
+        name
+        updated_at
+      }
+    }
+  }
+`
 
 // export const GET_MORE_MESSAGES = gql`
 //   query GetMoreMessages($id: ID!, $offset: Int!) {
