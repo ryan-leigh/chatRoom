@@ -22,22 +22,13 @@ const Room = ({ roomId }) => {
         document: MESSAGES_SUBSCRIPTION,
         variables: { roomId },
         updateQuery: (prev, { subscriptionData }) => {
-          if (!subscriptionData.data) return prev;
-          // *** Try replacing this with just subscriptionData.data.newMessage ***
-          const newMessage = {
-            id: subscriptionData.data.newMessage.id,
-            body: subscriptionData.data.newMessage.body,
-            time_created: subscriptionData.data.newMessage.time_created,
-            author: {
-              id: subscriptionData.data.newMessage.author.id,
-              name: subscriptionData.data.newMessage.author.name,
-              updated_at: subscriptionData.data.newMessage.author.updated_at
-            }
+          if (!subscriptionData.data) {
+            return prev;
+          } else {
+            return Object.assign({}, prev, {
+              getMessages: [subscriptionData.data.newMessage]
+            });
           }
-          const returnObj = Object.assign({}, prev, {
-            getMessages: [newMessage]
-          })
-          return returnObj;
         },
         onError: (err) => {
           console.log('Subscription error');
