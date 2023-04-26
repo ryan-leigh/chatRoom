@@ -2,6 +2,7 @@ import React from 'react';
 const { useState, useEffect } = React;
 import { useReactiveVar, useMutation } from '@apollo/client';
 import { currentPage, currentUser, CREATE_USER } from '../client.js';
+import { Container, Text, Button } from '@mantine/core';
 
 const Login = () => {
   // State
@@ -30,19 +31,17 @@ const Login = () => {
   }, [createUserResult])
 
   return (
-    <div>
-      <div>
+    <Container>
         <span>Username: </span>
         <input type="text" value={username} onChange={(e) => {setUsername(e.target.value)}} />
-      </div>
-      <button onClick={handleUsernameSubmit}>Enter</button>
+      <Button onClick={handleUsernameSubmit}>Enter</Button>
       {createUserResult.error &&
         <div>An error occurred. Please try again later.</div>
       }
       {createUserResult.data?.createUser?.uniqueIssue &&
         <div>{createUserResult.data?.createUser?.message}</div>
       }
-    </div>
+    </Container>
   )
 }
 
