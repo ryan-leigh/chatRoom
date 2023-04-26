@@ -13,14 +13,16 @@ const SubmitNewMessage = ({ roomId }) => {
 
   // Handlers
   const handleMessageSubmit = () => {
-    createMessage({
-      variables: {
-        userId: currentUser().id,
-        roomId: roomId,
-        body: newMessageText,
-        timeCreated: Math.floor(Date.now()/1000)
-      }
-    })
+    if (newMessageText.length > 0) {
+      createMessage({
+        variables: {
+          userId: currentUser().id,
+          roomId: roomId,
+          body: newMessageText,
+          timeCreated: Math.floor(Date.now()/1000)
+        }
+      })
+    }
     setNewMessageText('');
   }
 
